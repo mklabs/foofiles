@@ -1,0 +1,8 @@
+help          show this help text
+
+ls            list remote gists
+la            list remote gists with extended information
+ll            list remote gists with full information
+
+get           fetch a remote gist locally
+
