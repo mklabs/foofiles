@@ -72,7 +72,10 @@ directory.
 
 > todo
 
-Every request sent to `https://api.github.com` is fetched locally and
-cleared every 24 hours. You can manually force the cache clean with
-`gist-console clear-cache`, or `cache clear` from within the repl.
+Every request sent to `https://api.github.com` is fetched and cached
+locally. Every subsequent request to a particular url is pulled in from
+the cache afterwards.
+
+You can manually force the cache clean with `gist-console clear-cache`,
+or `cache clear` from within the repl.
 

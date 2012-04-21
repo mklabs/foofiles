@@ -15,11 +15,10 @@ function Commands(options) {
 
 util.inherits(Commands, events.EventEmitter);
 
-Commands.prototype.la = function(cmd, remote, cb) {
-  if(!cb) cb = remote, remote = false;
+Commands.prototype.la = function(cmd, cb) {
   var self = this;
-  this.list(function(g) {
-    self.log(g.id, g.description.yellow);
+  this.list(cmd, function(g) {
+    self.log(g.id, g.description.bold);
     self.log('Created: ', g.created_at.cyan);
     self.log('Updated: ', g.updated_at.cyan);
     self.log('Git URL: ', g.git_pull_url.cyan);
@@ -27,32 +26,50 @@ Commands.prototype.la = function(cmd, remote, cb) {
   }, cb);
 };
 
-Commands.prototype.ls = function(cmd, remote, cb) {
-  if(!cb) cb = remote, remote = false;
+Commands.prototype.ls = function(cmd, cb) {
   var self = this;
-  this.list(function(g) {
-    self.log(g.id, '  ', g.description.yellow);
+  this.list(cmd, function(g) {
+    self.log(g.id, '  ', g.description.cyan);
   }, cb);
 };
 
-Commands.prototype.ll = function(cmd, remote, cb) {
+Commands.prototype.ll = function(cmd, cb) {
   if(!cb) cb = remote, remote = false;
   var self = this;
-  this.list(function(g) {
-    self.log(g.id, '  ', g.description.yellow);
-    console.log();
+  this.list(cmd, function(g) {
+    self.log(g.id, '  ', g.description.bold);
     self.readline.inspect(g);
   }, cb);
 };
 
-Commands.prototype.list = function(logger, cb) {
+// main list function, does the walking of pages to fetch the whole set
+// of gists for a user
+Commands.prototype.list = function(cmd, logger, cb) {
   if(!cb) cb = remote, remote = false;
+
+  var filter = cmd.split(' ').slice(1).join(' ');
+  if(filter) filter = new RegExp(filter, 'i');
+
   var rl = this.readline;
-  rl.exec('GET /users/:user/gists', function(res, body) {
-    var gists = JSON.parse(body);
-    gists.forEach(logger);
-    cb();
-  });
+  (function next(page) {
+    rl.exec('GET /users/:user/gists?page=' + page, function(err, res, gists) {
+      if(!gists.length) return cb();
+      // normalize description
+      gists = gists.map(function(g) {
+        g.description = g.description || '';
+        return g;
+      });
+
+      // filter on description
+      gists = gists.filter(function(g) {
+        if(!filter) return true;
+        return filter.test(g.id) || filter.test(g.description);
+      });
+
+      gists.forEach(logger);
+      next(page + 1);
+    });
+  })(1);
 };
 
 Commands.prototype.get = function(cmd, cb) {
@@ -61,7 +78,8 @@ Commands.prototype.get = function(cmd, cb) {
 
 Commands.prototype.log = function() {
   var args = Array.prototype.slice.call(arguments);
-  args[0] = pad(args[0].bold, 10);
+  args[0] = pad(args[0], 10);
+  args[0] = args[0].bold;
   console.log.apply(console, args);
 };
 

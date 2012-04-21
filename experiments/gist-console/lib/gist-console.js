@@ -6,7 +6,11 @@ var fs = require('fs'),
   http = require('http'),
   exec = require('child_process').exec,
   events = require('events'),
+  crypto = require('crypto'),
+  request = require('request'),
+  rimraf = require('rimraf'),
   HttpConsole = require('http-console').Console,
+  fstream = require('fstream'),
   Commands = require('./commands'),
   _ = require('underscore');
 
@@ -47,6 +51,8 @@ function GistConsole(options) {
   this.prefix = options.prompt || '☺ >> ';
   this.historyPath = options.history || path.join(__dirname, 'history.txt');
   this.history = fs.createWriteStream(this.historyPath, { flags: 'a' });
+
+  this.cachedir = path.join(__dirname, '../_cache');
 
   // set up routes and commands
   this.configure();
@@ -93,17 +99,27 @@ GistConsole.prototype.prompt = function() {
 
 var matcher = /^(GET|POST|PUT|HEAD|DELETE)\s([^\s]+)/i;
 GistConsole.prototype.exec = function (cmd, cb) {
-  var args = cmd.match(matcher);
+  var args = cmd.match(matcher)
+    self = this;
+
   // only dealing with GET request for now
   if(cmd === 'help') return this.help();
-  if(cmd === 'ls') return this.gist.ls(cmd, this.prompt.bind(this));
-  if(cmd === 'll') return this.gist.ll(cmd, this.prompt.bind(this));
-  if(cmd === 'la') return this.gist.la(cmd, this.prompt.bind(this));
+  if(/^list\s?/.test(cmd)) return this.gist.ls(cmd, this.prompt.bind(this));
+  if(/^ls\s?/.test(cmd)) return this.gist.ls(cmd, this.prompt.bind(this));
+  if(/^ll\s?/.test(cmd)) return this.gist.ll(cmd, this.prompt.bind(this));
+  if(/^la\s?/.test(cmd)) return this.gist.la(cmd, this.prompt.bind(this));
 
   if(cmd === 'ls-remote') return this.gist.ls(cmd, true, this.prompt.bind(this));
   if(cmd === 'get') return this.gist.get(cmd, this.prompt.bind(this));
+  if(cmd === 'cache clear') return rimraf(this.cachedir, function(e) {
+    console.log(e || '... Cleared cache ...');
+    self.prompt();
+  });
 
-  if(!args) return this.prompt();
+  if(!args) {
+    if(cmd) console.log(('Unknown command ' + cmd).bold.yellow);
+    return this.prompt();
+  }
 
   // GET /github/api/subpath/with/:some/:param/maybe
   var method = args[1],
@@ -112,12 +128,11 @@ GistConsole.prototype.exec = function (cmd, cb) {
   // replace `:param`
   var params = url.match(/\:[a-z]+/gi) || [];
 
-  (function ask(param, self) {
+  (function ask(param) {
     if(!param) {
-      console.log('... Request ', 'https://' + self.host + url, '...');
-      return self.request(method, url, {}, cb || function (res, body) {
-       self.printResponse(res, body, self.prompt.bind(self));
-      }).end();
+      return self.request(method, url, cb || function (err, res, body) {
+        self.printResponse(res, body, self.prompt.bind(self));
+      });
     }
 
     var p = param.slice(1),
@@ -135,7 +150,7 @@ GistConsole.prototype.exec = function (cmd, cb) {
       url = url.replace(param, res || def);
       ask(params.shift(), self);
     });
-  })(params.shift(), this)
+  })(params.shift())
 };
 
 GistConsole.prototype.printResponse = function (res, body, cb) {
@@ -177,6 +192,40 @@ GistConsole.prototype.printResponse = function (res, body, cb) {
   process.stdout.on('drain', cb);
 };
 
+
+GistConsole.prototype.request = function(method, url, cb) {
+  var self = this,
+    cache = path.join(this.cachedir, this.sha1(url)),
+    body = '';
+
+  var req = request({
+    medhod: method,
+    url: 'https://' + this.host + url,
+    json: true
+  });
+
+  function end() {
+    cb(null, req.res, JSON.parse(body));
+  }
+
+  req.on('end', end).on('error', cb).pause();
+
+  var cachefile = fs.createReadStream(cache)
+    .on('error', function(e) {
+      console.log('... Caching file', cache, '...');
+      console.log('... Request ', 'https://' + self.host + url, '...');
+      // pipe the response to the cache file
+      req.pipe(fstream.Writer(cache));
+      req.resume();
+    })
+    .once('data', function() { req.abort(); })
+    .on('data', function(c) { body += c })
+    .on('end', end);
+
+  return req;
+};
+
+
 //
 // GistConsole API
 //
@@ -192,6 +241,13 @@ GistConsole.prototype.config = function(cb) {
     params.user = params.user || vars['github.user'];
     cb();
   });
+};
+
+// compute a sha1 for given url
+GistConsole.prototype.sha1 = function(url) {
+  var sha1 = crypto.createHash('sha1');
+  sha1.update(url);
+  return sha1.digest('hex');
 };
 
 GistConsole.prototype.gitvar = function(cb) {
