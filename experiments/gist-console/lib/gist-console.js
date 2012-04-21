@@ -103,10 +103,9 @@ GistConsole.prototype.exec = function (cmd, cb) {
   if(cmd === 'ls-remote') return this.gist.ls(cmd, true, this.prompt.bind(this));
   if(cmd === 'get') return this.gist.get(cmd, this.prompt.bind(this));
 
-  if(!args || args[1] !== 'GET') {
-    return HttpConsole.prototype.exec.apply(this, arguments);
-  }
+  if(!args) return this.prompt();
 
+  // GET /github/api/subpath/with/:some/:param/maybe
   var method = args[1],
     url = args[2];
 
@@ -147,12 +146,12 @@ GistConsole.prototype.printResponse = function (res, body, cb) {
 
   var status = ('HTTP/' + [version, code, msg].join(' ')).bold;
 
-  status = code >= 500 ? status.red :
-    code >= 400 ? status.yellow :
-    code >= 300 ? status.cyan :
-    status.green;
+  var color = code >= 500 ? 'red' :
+    code >= 400 ? 'yellow' :
+    code >= 300 ? 'cyan' :
+    'green';
 
-  console.log(status);
+  console.log(status[color]);
 
   this.printHeaders(res.headers);
 
@@ -161,6 +160,15 @@ GistConsole.prototype.printResponse = function (res, body, cb) {
     console.error('Oh snap!');
     this.inspect(body);
     this.inspect(e);
+  };
+
+  // update prompt color with latest status color, if ok, let it be
+  var self = this,
+    prompt = this.options.prompt;
+
+  cb = prompt === 'green' ? cb : function() {
+    self.readline.setPrompt(prompt[color], prompt.length);
+    self.readline.prompt();
   };
 
   // Make sure the buffer is flushed before
