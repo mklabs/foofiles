@@ -56,8 +56,7 @@ take a while).
 
     gist » get <gist-id> <location>
 
-`gist-id` is mandatory, `location` is optional and defaults to
-`./gists/<gist-id>`.
+`gist-id` is mandatory, `location` is optional and prompted if not set.
 
 > todo
 

@@ -108,8 +108,8 @@ GistConsole.prototype.exec = function (cmd, cb) {
   if(/^ls\s?/.test(cmd)) return this.gist.ls(cmd, this.prompt.bind(this));
   if(/^ll\s?/.test(cmd)) return this.gist.ll(cmd, this.prompt.bind(this));
   if(/^la\s?/.test(cmd)) return this.gist.la(cmd, this.prompt.bind(this));
+  if(/^get\s?/.test(cmd)) return this.gist.get(cmd, this.prompt.bind(this));
 
-  if(cmd === 'ls-remote') return this.gist.ls(cmd, true, this.prompt.bind(this));
   if(cmd === 'get') return this.gist.get(cmd, this.prompt.bind(this));
   if(cmd === 'cache clear') return rimraf(this.cachedir, function(e) {
     console.log(e || '... Cleared cache ...');
@@ -204,13 +204,18 @@ GistConsole.prototype.request = function(method, url, cb) {
     json: true
   });
 
+  var cachefile = fs.createReadStream(cache);
+
   function end() {
-    cb(null, req.res, JSON.parse(body));
+    try { cb(null, req.res, JSON.parse(body)); }
+    catch(e) { cachefile.emit('error') }
   }
 
-  req.on('end', end).on('error', cb).pause();
+  req.on('end', end).on('error', cb)
+  req.on('data', function(c) { body += c })
+  req.pause();
 
-  var cachefile = fs.createReadStream(cache)
+  cachefile
     .on('error', function(e) {
       console.log('... Caching file', cache, '...');
       console.log('... Request ', 'https://' + self.host + url, '...');

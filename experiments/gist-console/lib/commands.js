@@ -2,7 +2,10 @@
 var fs = require('fs'),
   path = require('path'),
   util = require('util'),
-  events = require('events');
+  zlib = require('zlib'),
+  tar = require('tar'),
+  events = require('events'),
+  request = require('request');
 
 module.exports = Commands;
 
@@ -74,6 +77,23 @@ Commands.prototype.list = function(cmd, logger, cb) {
 
 Commands.prototype.get = function(cmd, cb) {
   console.log('Get?', cmd);
+  cmd = cmd.split(' ').slice(1).join(' ');
+  var args = cmd.match(/([\d]+)\s?(.+)?/);
+  if(!args) {
+    console.error('get <id> <location>'.yellow);
+    return cb();
+  }
+
+  var id = args[1],
+    target = args[2] || './gists/' + id,
+    url = 'https://gist.github.com/gists/' + id + '/download';
+
+  console.log(url, target);
+  fetch(url, target, function(e) {
+    if(e) return self.emit('error', e);
+    console.log('... Gist', id, 'fetched in', target, '...');
+    cb();
+  });
 };
 
 Commands.prototype.log = function() {
@@ -86,5 +106,32 @@ Commands.prototype.log = function() {
 function pad(str, max) {
   return str.length > max ? str :
     str + new Array(max - str.length + 1).join(' ');
-};
+}
 
+function fetch(tarball, target, cb) {
+  // tarball untar opts
+  var extractOpts = { type: 'Directory', path: target, strip: 1 };
+
+  // remote request --> zlib.Unzip() --> untar into h5bp/root
+  var req = request.get(tarball).on('error', cb);
+
+  req.on('data', function() { process.stdout.write('.'); });
+
+  return req
+    // first gzip
+    .pipe(zlib.Unzip())
+    .on('error', function(err) {
+      console.error('unzip error', err);
+      cb(err);
+    })
+    .pipe(tar.Extract(extractOpts))
+    .on('entry', function(entry) {
+      entry.props.uid = entry.uid = 501;
+      entry.props.gid = entry.gid = 20;
+    })
+    .on('error', function(err) {
+      console.error('untar error', err);
+      cb(err);
+    })
+    .on('close', cb);
+}

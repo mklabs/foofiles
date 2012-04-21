@@ -1,19 +1,21 @@
 
 Repl commands:
 
-  gist » help   show this help text
-  gist » ls     list remote gists
-  gist » la     list remote gists with extended information
-  gist » ll     list remote gists with full information
-  gist » get    fetch a remote gist locally
+  gist » help           show this help text
+  gist » ls             list remote gists
+  gist » la             list remote gists with extended information
+  gist » ll             list remote gists with full information
+  gist » get            fetch a remote gist locally
+  gist » cache clear    clear the local cache
 
 Usage:
 
   gist-console [options]
 
-  --user        github user, if not set guessed from git-vars
-  --prompt      Change the repl prompt
-  --color       Change the prompt color, can be one of:
-                bold, grey, yellow, red, green, white, cyan
+  -h, --help            show this help text
+  -u, --user            github user, if not set guessed from git-vars
+  -p, --prompt          change the repl prompt
+  -c, --color           change the prompt color, can be one of:
+                        bold, grey, yellow, red, green, white, cyan
 
 
