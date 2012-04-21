@@ -4,6 +4,7 @@ var fs = require('fs'),
   path = require('path'),
   util = require('util'),
   http = require('http'),
+  exec = require('child_process').exec,
   events = require('events'),
   HttpConsole = require('http-console').Console,
   Commands = require('./commands'),
@@ -56,7 +57,7 @@ _.extend(GistConsole.prototype, HttpConsole.prototype);
 
 GistConsole.prototype.configure = function() {
   var o = this.options;
-  this.options.prompt = o.prompt || '☺ >> ';
+  this.options.prompt = (o.prompt || 'gist »') + ' ';
 
   this.command('help', 'h', this.help);
 };
@@ -66,15 +67,29 @@ GistConsole.prototype.configure = function() {
 //
 
 GistConsole.prototype.initialize = function() {
-  HttpConsole.prototype.initialize.apply(this, arguments);
-  var history = this.history;
-  // for support upon history
-  this.readline.on('line', function(cmd) {
-    history.write(cmd + '\n');
+  var self = this;
+  // init config from git-vars and environment
+  this.config(function(err) {
+    if(err) return self.emit('error', err);
+    HttpConsole.prototype.initialize.apply(self, arguments);
+    // for support upcoming history across session
+    self.readline.setPrompt(self.options.prompt, self.options.prompt.length);
+
+    self.readline.on('line', function(cmd) {
+      self.history.write(cmd + '\n');
+    });
   });
   return this;
 };
 
+GistConsole.prototype.prompt = function() {
+  var prompt = this.options.prompt + this.path.join('/'),
+    color = this.options.color || 'grey';
+
+  if(!this.readline) return;
+  this.readline.setPrompt(prompt[color], prompt.length);
+  this.readline.prompt();
+};
 
 var matcher = /^(GET|POST|PUT|HEAD|DELETE)\s([^\s]+)/i;
 GistConsole.prototype.exec = function (cmd, cb) {
@@ -157,6 +172,46 @@ GistConsole.prototype.printResponse = function (res, body, cb) {
 //
 // GistConsole API
 //
+
+// init config from git-vars and environment variables
+GistConsole.prototype.config = function(cb) {
+  var self = this,
+    params = this.options;
+
+  this.gitvar(function(e, vars) {
+    if(e) return self.emit('error', e);
+    self.vars = vars;
+    params.user = params.user || vars['github.user'];
+    cb();
+  });
+};
+
+GistConsole.prototype.gitvar = function(cb) {
+  exec('git config -l', function(e, out, err) {
+    if(e) return cb('error', e);
+    var o = out.trim().split('\n').map(function(line) {
+      var parts = line.split('=');
+      return {
+        name: parts[0],
+        value: parts[1]
+      }
+    }).reduce(function(o, line) {
+      var value = line.value;
+
+      // coerce to appropriate type
+      value = value === 'true' ? true :
+        value === 'false' ? false :
+        value === 'null' ? null :
+        !isNaN(Number(value)) ? Number(value) :
+        value;
+
+      o[line.name] = value;
+      return o;
+    }, {})
+
+    cb(null, o);
+  });
+};
 
 GistConsole.prototype.command = function(cmd, shorthand, fn) {
   if(!fn) fn = short, short = '';

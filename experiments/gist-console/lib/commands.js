@@ -47,7 +47,6 @@ Commands.prototype.ll = function(cmd, remote, cb) {
 
 Commands.prototype.list = function(logger, cb) {
   if(!cb) cb = remote, remote = false;
-
   var rl = this.readline;
   rl.exec('GET /users/:user/gists', function(res, body) {
     var gists = JSON.parse(body);

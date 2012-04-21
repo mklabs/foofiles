@@ -1,8 +1,19 @@
-help          show this help text
 
-ls            list remote gists
-la            list remote gists with extended information
-ll            list remote gists with full information
+Repl commands:
 
-get           fetch a remote gist locally
+  gist » help   show this help text
+  gist » ls     list remote gists
+  gist » la     list remote gists with extended information
+  gist » ll     list remote gists with full information
+  gist » get    fetch a remote gist locally
+
+Usage:
+
+  gist-console [options]
+
+  --user        github user, if not set guessed from git-vars
+  --prompt      Change the repl prompt
+  --color       Change the prompt color, can be one of:
+                bold, grey, yellow, red, green, white, cyan
+
 
