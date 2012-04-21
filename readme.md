@@ -17,4 +17,11 @@ things to it and pipe the output to anything.
 
 It's easy to use, to automate or integrate in a given build process.
 
+---
+
+experimental stuff goes in `experiments/**`. Usually
+`experiments/**/readme.md` files includes more info.
+
+This include some test and experimental package, some might gain their
+own repo, most won't.
 
