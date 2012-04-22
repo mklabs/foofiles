@@ -1,0 +1,50 @@
+#!/usr/bin/env node
+
+// module dependencies
+
+var fs = require('fs'),
+  path = require('path'),
+  StripThings = require('../');
+
+// parse command line options
+
+var opts = require('../lib/opts')(process.argv.slice(2));
+
+// Version output, `-v` or `--version`
+
+if(opts.version || opts.v) {
+  return console.log(require('./package.json').version);
+}
+
+
+// Help output, `-h` or `--help`
+
+if(opts.help || opts.h) {
+  return fs.createReadStream(path.join(__dirname, 'help.txt'))
+    .pipe(process.stdout);
+}
+
+// file input
+
+opts.file = opts.file ? path.resolve(opts.file) : null;
+
+// output
+
+opts.output = opts.output ? path.resolve(opts.output) : null;
+
+//
+// Collect data from stdin when `file` is unset, from fs.readStream when set.
+//
+
+var input = opts.file ? fs.createReadStream(opts.file) : process.openStdin();
+
+//
+// Output destination, writable fs stream when `output` is provided, output to
+// standard output when unset
+//
+
+var output = opts.output ? fs.createWriteStream(opts.output) : process.stdout;
+
+// process things
+
+input.pipe(new StripThings).pipe(output);

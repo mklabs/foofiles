@@ -1,0 +1,16 @@
+  Usage: strip-comments [options]
+
+  Options:
+
+    -h, --help     output usage information
+    -v, --version  output the version number
+    --file         input file
+    --output       output file
+
+  Examples:
+
+    $ strip-comments --file index.html --output index.html
+    $ strip-comments --file css/style.css > css/style.css
+    $ cat css/*.css | strip-comments >> stripped.css
+    $ curl http://example.com/css/style.css -s | strip-comments
+
