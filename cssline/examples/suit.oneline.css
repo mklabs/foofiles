@@ -30,7 +30,7 @@ audio:not([controls]) { display: none; height: 0 }
 
 /* Root
    ========================================================================== */
-html { font-family: HelveticaArialsans-serif; font-size: 16px; line-height: 1.4; color: #444444; ; -webkit-text-size-adjust: 100%;     -ms-text-size-adjust: 100% }
+html { font-family: HelveticaArialsans-serif; font-size: 16px; line-height: 1.4; color: #444444; -webkit-text-size-adjust: 100%;     -ms-text-size-adjust: 100% }
 body { margin: 0; background: white }
 
 /* Links
@@ -120,7 +120,7 @@ figure { margin: 0 }
 /* =============================================================================
    Common helper classes
    ========================================================================== */
-.cf:before, .cf:after { display: table; content:  }
+.cf:before, .cf:after { display: table; content: "" }
 .cf:after { clear: both }
 .is-hidden { display: none !important; visibility: hidden !important }
 
@@ -337,7 +337,7 @@ textarea { overflow: auto; vertical-align: top; resize: vertical }
 /* Standard form
    ========================================================================== */
 .form .field { margin: 0 0 1.5em }
-.form .field:before, .form .field:after { display: table; content:  }
+.form .field:before, .form .field:after { display: table; content: "" }
 .form .field:after { clear: both }
 .form .caption { display: block; margin: 0 0 5px }
 .form .caption-inline { display: inline; margin-right: 15px }
@@ -362,7 +362,7 @@ table { border-collapse: collapse; border-spacing: 0 }
 /* iblock [structural component]
    stubbornella.org/content/2010/06/25/the-media-object-saves-hundreds-of-lines-of-code/
    ========================================================================== */
-.iblock:before, .iblock:after { display: table; content:  }
+.iblock:before, .iblock:after { display: table; content: "" }
 .iblock:after { clear: both }
 
 /*
@@ -548,14 +548,14 @@ table { border-collapse: collapse; border-spacing: 0 }
    Tabs
    ========================================================================== */
 .tabs { padding: 0; margin: 0; list-style: none }
-.tabs:before, .tabs:after { display: table; content:  }
+.tabs:before, .tabs:after { display: table; content: "" }
 .tabs:after { clear: both }
 .tabs li, .tabs a { float: left }
 .tabs>li { position: relative; margin-bottom: -1px }
 .tab-content>.tab-pane, .tab-content>div { display: none }
 .tab-content>.active { display: block }
 .container { max-width: 60em; padding: 0 10px; margin: 0 auto }
-.container:before, .container:after { display: table; content:  }
+.container:before, .container:after { display: table; content: "" }
 .container:after { clear: both }
 .site-header { padding: 10px 0; margin: 0 0 50px; background: #eff1f3; border-bottom: 1px solid #ddd; box-shadow: 0 -1px 2px 2px rgba(0, 0, 0, 0.1) }
 .site-header .logo { float: left; margin-right: 30px; font-size: 1.875em; color: #222; text-decoration: none }

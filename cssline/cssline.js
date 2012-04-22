@@ -1,11 +1,5 @@
 #!/usr/bin/env node
 
-//
-// small program/library to make creation of data uris for web content quick and easy
-//
-//    ./base64 ../path/to/some/file.png | pbcopy
-//
-
 var fs = require('fs'),
   path = require('path'),
   util = require('util'),
@@ -17,6 +11,13 @@ var fs = require('fs'),
 module.exports = cssline;
 cssline.CSSLine = CSSLine;
 
+// global macther
+var matcher = /(^[^\{]+)\{\s*([^\}]+)\}/;
+
+// single-line matcher
+var single = /^[^\{]+\{\s*[^\|^\n}]+\}/
+
+// top-level exports
 function cssline(file, options) {
   var url = /\/\//.test(file);
   var input = url ? request(file) : fs.createReadStream(file);
@@ -29,27 +30,49 @@ function CSSLine(options) {
   this.options = options || {};
   this.options.indent = options.indent || '  ';
 
-  // unfortunately, recess only allows filepath to be passed-in not raw content
-  // so write the file temporary in a local cache, then create a new Recess
+  // haha, was just parse error
 
   var self = this;
   this.on('pipe', function(input) {
-    self.cachefile = path.join(__dirname, '_cache', (+new Date + '').slice(-10) + '.css');
+    self.cachefile = path.join(__dirname, '_cache', 'foostyle.css');
     input.pipe(fs.createWriteStream(self.cachefile));
-  });
 
-  this.on('clean', function() {
-    fs.unlink(self.cachefile)
+    // auto detect mode on first set of selector rules,
+    // if single-line format assume conersion to multi for the whole
+    // document
+    input.once('data', function(c) {
+      self.single = single.test(c);
+      self.mode = self.single ? 'multi' : 'single';
+    });
   });
 
   this.on('recess', function(e) {
     var r = self.recess;
 
+    // if there's any error, then too bad..
+    if(r.errors.length) return r.errors.forEach(function(err) {
+      if(err instanceof Error) return console.error(err.message.yellow, err)
+
+      var extract = err.extract.map(function(l, i) {
+        if(i !== 1) return l;
+        var col = err.column;
+        l = l.slice(0, col - 1).concat(l.slice(col - 1, col + 1).red).concat(l.slice(col + 1));
+        return l;
+      }).join('\n');
+
+      console.log(err.message.red);
+      console.log('Type: '.bold, (err.type + '').yellow);
+      console.log('Line: '.bold, (err.line + '').yellow);
+      console.log();
+      console.log(extract);
+      console.log();
+    });
+
     // most likely parsing single line css if no r.output
-    var out = !r.output.length ? this.toMulti(r.data) :
+    var out = self.single ? this.toMulti(r.data) :
       r.definitions.map(self.toCSS).join('\n');
 
-    self.emit('data', out + '\n');
+    if(!opts.silent) self.emit('data', out + '\n');
     self.emit('clean');
   });
 
@@ -64,14 +87,11 @@ CSSLine.prototype.toMulti = function(body) {
   var lines = body.split(/\r\n|\n/g)
     .map(this.toMultiProps.bind(this));
 
-  console.log(lines.join('\n'));
-
-  return '';
+  return lines.join('\n');
 };
 
 // take a single line of css, expand to multi-line style
 
-var matcher = /(^[^\{]+)\{\s*([^\}]+)\}/;
 CSSLine.prototype.toMultiProps = function(line) {
   var parts = line.match(matcher  );
   // most likely comment, let them be
@@ -96,6 +116,8 @@ CSSLine.prototype.toMultiProps = function(line) {
   return out;
 };
 
+var foo = false;
+
 // take a less token, returns according css
 CSSLine.prototype.toCSS = function(t) {
   if(t.value) return '\n' + t.value.trim();
@@ -108,7 +130,7 @@ CSSLine.prototype.toCSS = function(t) {
 
   var rules = t.rules.map(function(r) {
     var value = r.value.value;
-    if(!value) return '';
+    if(value == null) return '';
     return r.name + ': ' + value.map(function(v) {
       var val = Array.isArray(v.value) ? v.value : [{
         value: v.value
@@ -116,12 +138,14 @@ CSSLine.prototype.toCSS = function(t) {
 
       // should probably be better if put as a recursive thing
       function value(parent) { return function(v) {
-        var prev = parent.value && parent.value.value;
         // value is an inner prop, build from parent value
         if(typeof v.value === 'object') {
           // is it an url like thing?
           if(v.paths) return 'url(' + v.value.value + ')';
         }
+
+        // quote?
+        if(v.quote) return v.quote + v.value + v.quote;
 
         // is a direct value and not an inner prop
         if(v.value != null) return v.value + (v.unit || '');
@@ -136,7 +160,11 @@ CSSLine.prototype.toCSS = function(t) {
 
       return val.map(value(r)).join(' ').trim();
     }).join('');
-  }).join('; ');
+  })
+  // filter every empty value
+  .filter(function(l) { return l; })
+  // join the rules
+  .join('; ');
 
   return sel.trim() + ' { ' + rules + ' }';
 };

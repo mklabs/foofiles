@@ -21,5 +21,10 @@ it to be considered as a remote url.
 
     $ css https://raw.github.com/necolas/suit/master/css/suit.css --oneline
 
+When run without `--oneline` or `--multiline`, then `cssline` tries to
+auto-detect the desired output from streaming css (eg, if the first set
+of `.selector { ... props ... }` appears to be one a single-line, then
+the conversion is done to multi-line format for the whole document)
+
 [recess]: http://twitter.github.com/recess
 
