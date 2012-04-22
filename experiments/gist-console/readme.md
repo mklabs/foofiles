@@ -69,8 +69,6 @@ directory.
 
 ## Cache
 
-> todo
-
 Every request sent to `https://api.github.com` is fetched and cached
 locally. Every subsequent request to a particular url is pulled in from
 the cache afterwards.
