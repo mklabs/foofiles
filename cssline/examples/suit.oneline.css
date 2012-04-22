@@ -535,7 +535,7 @@ table { border-collapse: collapse; border-spacing: 0 }
    ========================================================================== */
 
 /* Recommended use: <i class="icon [type]">[optional screenreader text]</i> */
-.icon { position: relative; display: inline-block; width: 16px; height: 16px; font: a; text-shadow: none; background: [object Object] no-repeat 99px 99px }
+.icon { position: relative; display: inline-block; width: 16px; height: 16px; font: a; text-shadow: none; background: url(../img/tbc.png) no-repeat 99px 99px }
 
 /* =============================================================================
    Dropdowns

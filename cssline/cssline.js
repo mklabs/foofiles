@@ -27,6 +27,7 @@ function CSSLine(options) {
   this.readable = this.writable = true;
   this.chunks = [];
   this.options = options || {};
+  this.options.indent = options.indent || '  ';
 
   // unfortunately, recess only allows filepath to be passed-in not raw content
   // so write the file temporary in a local cache, then create a new Recess
@@ -43,7 +44,10 @@ function CSSLine(options) {
 
   this.on('recess', function(e) {
     var r = self.recess;
-    var out = r.definitions.map(self.toCSS).join('\n');
+
+    // most likely parsing single line css if no r.output
+    var out = !r.output.length ? this.toMulti(r.data) :
+      r.definitions.map(self.toCSS).join('\n');
 
     self.emit('data', out + '\n');
     self.emit('clean');
@@ -53,6 +57,44 @@ function CSSLine(options) {
 }
 
 util.inherits(CSSLine, Stream);
+
+// take a whole stylesheets and convert to multi-line form
+CSSLine.prototype.toMulti = function(body) {
+  // one at a time
+  var lines = body.split(/\r\n|\n/g)
+    .map(this.toMultiProps.bind(this));
+
+  console.log(lines.join('\n'));
+
+  return '';
+};
+
+// take a single line of css, expand to multi-line style
+
+var matcher = /(^[^\{]+)\{\s*([^\}]+)\}/;
+CSSLine.prototype.toMultiProps = function(line) {
+  var parts = line.match(matcher  );
+  // most likely comment, let them be
+  if(!parts) return line;
+
+  var sel = parts[1],
+    props = parts[2],
+    indent = this.options.indent;
+
+  // handle props splitting
+  props = props.trim();
+
+  var out = [
+    sel + '{',
+    props.split(';').map(function(p) {
+      return indent + p.trim() + ';';
+    }).join('\n'),
+    '}',
+    ''
+  ].join('\n');
+
+  return out;
+};
 
 // take a less token, returns according css
 CSSLine.prototype.toCSS = function(t) {
