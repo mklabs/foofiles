@@ -37,7 +37,6 @@ Commands.prototype.ls = function(cmd, cb) {
 };
 
 Commands.prototype.ll = function(cmd, cb) {
-  if(!cb) cb = remote, remote = false;
   var self = this;
   this.list(cmd, function(g) {
     self.log(g.id, '  ', g.description.bold);
@@ -48,8 +47,6 @@ Commands.prototype.ll = function(cmd, cb) {
 // main list function, does the walking of pages to fetch the whole set
 // of gists for a user
 Commands.prototype.list = function(cmd, logger, cb) {
-  if(!cb) cb = remote, remote = false;
-
   var filter = cmd.split(' ').slice(1).join(' ');
   if(filter) filter = new RegExp(filter, 'i');
 
@@ -76,7 +73,6 @@ Commands.prototype.list = function(cmd, logger, cb) {
 };
 
 Commands.prototype.get = function(cmd, cb) {
-  console.log('Get?', cmd);
   cmd = cmd.split(' ').slice(1).join(' ');
   var args = cmd.match(/([\d]+)\s?(.+)?/);
   if(!args) {
@@ -86,9 +82,9 @@ Commands.prototype.get = function(cmd, cb) {
 
   var id = args[1],
     target = args[2] || './gists/' + id,
-    url = 'https://gist.github.com/gists/' + id + '/download';
+    url = 'https://gist.github.com/gists/' + id + '/download',
+    self = this;
 
-  console.log(url, target);
   fetch(url, target, function(e) {
     if(e) return self.emit('error', e);
     console.log('... Gist', id, 'fetched in', target, '...');

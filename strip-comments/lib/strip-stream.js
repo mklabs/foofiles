@@ -39,7 +39,7 @@ StripThings.prototype.stripCss = function(css) {
   // only for special block comments like `/** == `
 
   css = css.replace(cm, function(match) {
-    return /\*\s=/.test(match) ? match : '';
+    return (/\*\s=/).test(match) ? match : '';
   });
 
   css = this.trimEmptyLines(css);

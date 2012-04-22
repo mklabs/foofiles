@@ -99,7 +99,7 @@ GistConsole.prototype.prompt = function() {
 
 var matcher = /^(GET|POST|PUT|HEAD|DELETE)\s([^\s]+)/i;
 GistConsole.prototype.exec = function (cmd, cb) {
-  var args = cmd.match(matcher)
+  var args = cmd.match(matcher),
     self = this;
 
   // only dealing with GET request for now
@@ -145,7 +145,7 @@ GistConsole.prototype.exec = function (cmd, cb) {
       return ask(params.shift(), self);
     }
 
-    self.readline.question(msg, function(res) {
+    self.readline.question(p + ': ', function(res) {
       if(!res && !def) return ask(param, self);
       url = url.replace(param, res || def);
       ask(params.shift(), self);
@@ -175,7 +175,7 @@ GistConsole.prototype.printResponse = function (res, body, cb) {
     console.error('Oh snap!');
     this.inspect(body);
     this.inspect(e);
-  };
+  }
 
   // update prompt color with latest status color, if ok, let it be
   var self = this,
@@ -283,8 +283,6 @@ GistConsole.prototype.gitvar = function(cb) {
 };
 
 GistConsole.prototype.command = function(cmd, shorthand, fn) {
-  if(!fn) fn = short, short = '';
-
   this.emit('command', cmd, fn);
   this.commands = this.commands.concat({
     reg: new RegExp('^' + cmd + '$'),
