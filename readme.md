@@ -8,14 +8,14 @@ be used either from the cli or the stream API.
 
 Each scripts should conform to the following interface:
 
-* if no `--file` is provided, then takes input from stdin
+* `<cmd> <file, ...>`, with file mapping a remote url or a local file.
 
 * if no `--output` is provided, then prints results to stdout.
 
-The node scripts here should be usable in an unix-like way, you can pipe
-things to it and pipe the output to anything.
+The node scripts here should be usable in an unix-like way, they can
+take readable stream and pipe the output to writable stream.
 
-It's easy to use, to automate or integrate in a given build process.
+It's easy to use, automate or integrate in a given build process.
 
 ---
 
