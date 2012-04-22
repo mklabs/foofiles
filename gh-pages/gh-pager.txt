@@ -1,0 +1,7 @@
+
+  Usage: gh-pages [options] [template]
+
+  Options:
+    -v, --version            output version
+    -h, --help               output help information
+

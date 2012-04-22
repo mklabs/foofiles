@@ -1,0 +1,16 @@
+{
+  "author": "mklabs",
+  "name": "gh-pages",
+  "description": "Collection of template files for Github pages and internal tool to generate theme",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mklabs/foofiles.git"
+  },
+  "dependencies": {
+    "nopt": "~1.0.10",
+    "hogan": "~1.0.5-dev",
+    "marked": "~0.2.4-1"
+  },
+  "bin": "./gh-pager.js"
+}

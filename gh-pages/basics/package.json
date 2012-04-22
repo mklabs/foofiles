@@ -1,0 +1,10 @@
+{
+  "name": "basics",
+  "description": "Minimal, white, simple",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mklabs/foofiles.git"
+  },
+  "bin": "./basics.js"
+}

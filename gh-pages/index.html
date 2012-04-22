@@ -1,0 +1,265 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>gh-pages</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz">
+  <style>
+    /** curl https://raw.github.com/h5bp/html5-boilerplate/master/css/style.css -s | strip-comments **/
+    article, aside, details, figcaption, figure, footer, header, hgroup, nav, section { display: block; }
+    audio, canvas, video { display: inline-block; *display: inline; *zoom: 1; }
+    audio:not([controls]) { display: none; }
+    [hidden] { display: none; }
+
+    html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    html, button, input, select, textarea { font-family: sans-serif; color: #222; }
+    body { margin: 0; font-size: 1em; line-height: 1.4; }
+    ::-moz-selection { background: #A8CEFF; color: #888; text-shadow: none; }
+    ::selection { background: #A8CEFF; color: #888; text-shadow: none; }
+
+    a { color: #00e; }
+    a:visited { color: inherit; }
+    a:hover { color: #06e; }
+    a:focus { outline: thin dotted; }
+    a:hover, a:active { outline: 0; }
+
+    abbr[title] { border-bottom: 1px dotted; }
+    b, strong { font-weight: bold; }
+    blockquote { margin: 1em 40px; }
+    dfn { font-style: italic; }
+    hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; }
+    ins { background: #ff9; color: #000; text-decoration: none; }
+    mark { background: #ff0; color: #000; font-style: italic; font-weight: bold; }
+    pre, code, kbd, samp { font-family: monospace, serif; _font-family: 'courier new', monospace; font-size: 1em; }
+    pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
+    q { quotes: none; }
+    q:before, q:after { content: ""; content: none; }
+    small { font-size: 85%; }
+    sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+    sup { top: -0.5em; }
+    sub { bottom: -0.25em; }
+
+    ul, ol { margin: 1em 0; padding: 0 0 0 40px; }
+    dd { margin: 0 0 0 40px; }
+    nav ul, nav ol { list-style: none; list-style-image: none; margin: 0; padding: 0; }
+
+    img { border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; }
+    svg:not(:root) { overflow: hidden; }
+
+    figure { margin: 0; }
+
+    form { margin: 0; }
+    fieldset { border: 0; margin: 0; padding: 0; }
+    label { cursor: pointer; }
+    legend { border: 0; *margin-left: -7px; padding: 0; white-space: normal; }
+    button, input, select, textarea { font-size: 100%; margin: 0; vertical-align: baseline; *vertical-align: middle; }
+    button, input { line-height: normal; }
+    button, input[type="button"], input[type="reset"], input[type="submit"] { cursor: pointer; -webkit-appearance: button; *overflow: visible; }
+    button[disabled], input[disabled] { cursor: default; }
+    input[type="checkbox"], input[type="radio"] { box-sizing: border-box; padding: 0; *width: 13px; *height: 13px; }
+    input[type="search"] { -webkit-appearance: textfield; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box; }
+    input[type="search"]::-webkit-search-decoration, input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
+    button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; }
+    textarea { overflow: auto; vertical-align: top; resize: vertical; }
+    input:valid, textarea:valid {  }
+    input:invalid, textarea:invalid { background-color: #f0dddd; }
+
+    table { border-collapse: collapse; border-spacing: 0; }
+    td { vertical-align: top; }
+
+    .chromeframe { margin: 0.2em 0; background: #ccc; color: black; padding: 0.2em 0; }
+
+
+    @media only screen and (min-width: 35em) {
+
+    }
+
+    .ir { border: 0; font: 0/0 a; text-shadow: none; color: transparent; background-color: transparent; }
+    .hidden { display: none !important; visibility: hidden; }
+    .visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+    .visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
+    .invisible { visibility: hidden; }
+    .clearfix:before, .clearfix:after { content: ""; display: table; }
+    .clearfix:after { clear: both; }
+    .clearfix { *zoom: 1; }
+
+    @media print {
+      * { background: transparent !important; color: black !important; box-shadow:none !important; text-shadow: none !important; }
+      a, a:visited { text-decoration: underline; }
+      a[href]:after { content: " (" attr(href) ")"; }
+      abbr[title]:after { content: " (" attr(title) ")"; }
+      .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }
+      pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+      thead { display: table-header-group; }
+      tr, img { page-break-inside: avoid; }
+      img { max-width: 100% !important; }
+      @page { margin: 0.5cm; }
+      p, h2, h3 { orphans: 3; widows: 3; }
+      h2, h3 { page-break-after: avoid; }
+    }
+
+    /** theme specific **/
+    #content {
+      padding: 140px 110px 60px 110px;
+    }
+
+    body {
+      font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      margin: 0;
+      color: #2C2C2C;
+      border-top: 2px solid #DDD;
+    }
+
+    h1 {
+      margin-bottom: 16px;
+      margin-top: 14px;
+      font-size: 48px;
+      line-height: 1em;
+      letter-spacing: 0.2em;
+      font-family: 'Yanone Kaffeesatz',sans-serif;
+    }
+
+    h2 {
+      margin-top: 80px;
+      font-weight: 100;
+      letter-spacing: 1px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .intro p {
+      color: #777;
+      font-weight: 100;
+      letter-spacing: 1px;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="content">
+    <h1>gh-pages</h1>
+    <div class="intro">
+      <p>Collection of template files for gh-pages creation.
+
+</p>
+
+    </div>
+
+    <div class="body">
+      <p>Each &quot;theme&quot; is a sub-directory. A typical theme layout is like so:
+
+</p>
+<pre><code class="lang-sh">└── theme-name
+    ├── head.html
+    └── tail.html
+    └── theme-name.sh
+    └── package.json</code></pre>
+<ul>
+<li><strong>head.html</strong> is the template header, usually includes the whole
+<code>&lt;head /&gt;</code> and beginning of <code>&lt;body /&gt;</code> content.</li>
+</ul>
+<ul>
+<li><strong>tail.html</strong> is the template footer, usually the closing <code>&lt;/body&gt;</code>
+and <code>&lt;/html&gt;</code> tag.</li>
+</ul>
+<p>CSS and JS are inlined for conveniency.
+
+</p>
+<ul>
+<li><strong>package.json</strong> a simple package.json for the given template. A <code>bin</code>
+entry should be provided pointing to the template script.</li>
+</ul>
+<ul>
+<li><strong>theme-name.sh</strong> is the template script executed to build a new html
+page from the template files.</li>
+</ul>
+<h2>template script</h2>
+<p>Can be anything as long as the package.json&#39;s <code>bin</code> property is set appropriately.
+
+</p>
+<p>Note that these script files don&#39;t have to be nodejs or even javascript
+programs. They just have to be some kind of executable file.
+
+</p>
+<p>They should always conform to the following interface:
+
+</p>
+<ul>
+<li><p>take a markdown stream as stdin</p>
+</li>
+<li><p>output to stdout the generated html</p>
+</li>
+</ul>
+<h2>Example</h2>
+<p>Templates may use the <code>Generator</code> base stream in their template script.
+It is a convenient object that takes a readable stream and can pipe the
+output to any writable stream. Ex:
+
+</p>
+<pre><code class="lang-js">#!/usr/bin/env node
+
+var fs = require(&#39;fs&#39;),
+  path = require(&#39;path&#39;),
+  join = path.join;
+
+// template generator
+var Generator = require(&#39;../generator&#39;);
+
+// from stdin
+process.openStdin().pipe(new Generator(module)).pipe(process.stdout);
+
+// from local file
+fs.createReadStream(&#39;readme.md&#39;).pipe(new Generator(module)).pipe(process.stdout);
+
+// from a remote file
+var request = require(&#39;request&#39;);
+request(&#39;https://raw.github.com/rwldrn/idiomatic.js/master/readme.md&#39;)
+  .pipe(new Generator(module))
+  .pipe(process.stdout);
+
+// same but write to local file instead of stdout
+request(&#39;https://raw.github.com/rwldrn/idiomatic.js/master/readme.md&#39;)
+  .pipe(new Generator(module))
+  .pipe(fs.createWriteStream(&#39;./idiomatic.html&#39;));</code></pre>
+<p>The <code>module</code> object must be passed in to a <code>new Generator</code>, the base
+template directory is guessed from <code>module.filename</code>.
+
+
+</p>
+<h2>Head / Tail templates</h2>
+<p>Two <a href="http://mustache.github.com/">mustache</a> templates (compiled through <a href="http://twitter.github.com/hogan.js/">hogan</a>) are
+concatenated rendered using the following data:
+
+</p>
+<ul>
+<li><strong>title</strong>
+is guessed from streaming markdown, the very first heading element or
+text element is parsed as page title.</li>
+</ul>
+<ul>
+<li><strong>description</strong>
+is a noop right now (probably the first paragraph within <code>*... some text ...*</code> markers)</li>
+</ul>
+<ul>
+<li><strong>intro</strong>
+Anything before the very first <code>&lt;hr /&gt;</code> element (<code>---</code> in markdown) is
+extracted from body and made available as <code>data.intro</code>. Is an html
+string (so templates need to use <code>{{{ intro }}}</code>. If no <code>hr</code> element
+were found in the whole document, <code>intro</code> remains empty.</li>
+</ul>
+<ul>
+<li><strong>body</strong>
+The rest of the markdown body. Same as intro, is an html string so <code>{{{
+body }}}</code> should be used.</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+</html>
+
