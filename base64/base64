@@ -1,0 +1,81 @@
+#!/usr/bin/env node
+
+//
+// small program/library to make creation of data URIs for web content quick and easy
+//
+//    ./base64 ../path/to/some/file.png | pbcopy
+//
+
+var fs = require('fs'),
+  path = require('path'),
+  util = require('util'),
+  mime = require('mime'),
+  nopt = require('nopt'),
+  request = require('request'),
+  Stream = require('stream').Stream;
+
+module.exports = b64;
+b64.Base64 = Base64;
+
+function b64(file, options) {
+  var url = /\/\//.test(file);
+  var input = url ? request(file) : fs.createReadStream(file);
+  return input.pipe(new Base64(options)).pipe(process.stdout);
+}
+
+
+function Base64(options) {
+  this.readable = this.writable = true;
+  this.chunks = [];
+  this.options = options || {};
+
+  var self = this;
+  this.on('pipe', function(src) {
+    self.path = src.path;
+    self.type = mime.lookup(src.path);
+    self.selector = '.' + path.basename(src.path).replace(path.extname(src.path), '');
+    self.css = self.options.css === 'true' ? self.selector :
+      self.options.css ? self.options.css :
+      '';
+  });
+
+  Stream.call(this);
+}
+
+util.inherits(Base64, Stream);
+
+// stream api
+
+Base64.prototype.write = function(c) {
+  this.chunks = this.chunks.concat(c.toString('base64'));
+};
+
+Base64.prototype.end = function() {
+  // should check the size of img and warn if >32kb
+  var body = this.encode(this.type, this.chunks.join(''));
+  if(this.css) body = [
+    '/* b64 encoded ' + this.path + '*/',
+    this.css + ' {',
+    '  background: url(' + body + ')',
+    '}',
+    ''
+  ].join('\n');
+  this.emit('data', body);
+};
+
+// b64 api
+
+Base64.prototype.encode = function encode(type, data) {
+  if(!type || !data) return this.emit('error', new Error('missing type or data'));
+
+  return 'data:{type};base64,{base64}'
+    .replace('{type}', type)
+    .replace('{base64}', data);
+};
+
+// run!
+var opts = nopt({ css: [String, Boolean] }),
+  file = opts.argv.remain[0];
+
+if(file) b64(file, opts);
+

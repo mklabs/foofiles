@@ -1,0 +1,20 @@
+{
+  "author": "mklabs",
+  "name": "b64",
+  "description": "small program/library to make creation of data URIs for web content quick and easy",
+  "version": "0.0.1",
+  "bin": "./base64",
+  "main": "./base64",
+  "repository": {
+    "url": ""
+  },
+  "engines": {
+    "node": "> 0.4.0"
+  },
+  "dependencies": {
+    "mime": "~1.2.4",
+    "request": "~2.9.202",
+    "nopt": "~1.0.10"
+  },
+  "devDependencies": {}
+}
