@@ -10,11 +10,11 @@ of `recess.definitions` as parsed by the LESS tokenizer.
 
 You can "single-line" a "multi-line" css
 
-    $ cat ./path/to/some/file.css --oneline
+    $ cat ./path/to/some/file.css | cssline --oneline
 
 And you can "multi-line" a "single-line" css
 
-    $ css ./path/to/some/file.css --multiline
+    $ css ./path/to/some/file.css | cssline --multiline
 
 You can also convert directly a remote file, it just needs to have `//` in
 it to be considered as a remote url.
