@@ -19,7 +19,8 @@ var opts = nopt({
 // available templates
 
 var templates = fs.readdirSync(__dirname).filter(function(f) {
-  return f !== 'node_modules' &&
+  f = path.join(__dirname, f);
+  return !(/node_modules/.test(f)) &&
     !path.extname(f) &&
     fs.statSync(f).isDirectory();
 }).map(function(f) {
@@ -64,7 +65,7 @@ var template = templates.filter(function(t) {
   return t.name === name;
 })[0];
 
-var scriptfile = join(template.dirname, template.bin);
+var scriptfile = join(__dirname, template.dirname, template.bin);
 
 //
 // todo:
