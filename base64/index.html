@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>gh-pages</title>
+  <title>b64</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz">
@@ -179,121 +179,53 @@
 </head>
 <body>
   <div id="content">
-    <h1>gh-pages</h1>
+    <h1>b64</h1>
     <div class="intro">
-      <p>Collection of template files for gh-pages creation.
+      <p><em>small program/library to make creation of data URIs for web content quick and easy</em>
 
 </p>
 
     </div>
 
     <div class="body">
-      <p>Each &quot;theme&quot; is a sub-directory. A typical theme layout is like so:
+      <h2>Synopsis</h2>
+<pre><code>$ b64 ./path/to/some/file.png
+# output..
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAo0AAAHtCAIAAADz09PdAAAPVmlDQ1BJQ0Mg...</code></pre>
+<p>You can also encode a remote file
 
 </p>
-<pre><code class="lang-sh">└── theme-name
-    ├── head.html
-    └── tail.html
-    └── theme-name.sh
-    └── package.json</code></pre>
-<ul>
-<li><strong>head.html</strong> is the template header, usually includes the whole
-<code>&lt;head /&gt;</code> and beginning of <code>&lt;body /&gt;</code> content.</li>
-</ul>
-<ul>
-<li><strong>tail.html</strong> is the template footer, usually the closing <code>&lt;/body&gt;</code>
-and <code>&lt;/html&gt;</code> tag.</li>
-</ul>
-<p>CSS and JS are inlined for conveniency.
-
-</p>
-<ul>
-<li><strong>package.json</strong> a simple package.json for the given template. A <code>bin</code>
-entry should be provided pointing to the template script.</li>
-</ul>
-<ul>
-<li><strong>theme-name.sh</strong> is the template script executed to build a new html
-page from the template files.</li>
-</ul>
-<h2>template script</h2>
-<p>Can be anything as long as the package.json&#39;s <code>bin</code> property is set appropriately.
-
-</p>
-<p>Note that these script files don&#39;t have to be nodejs or even javascript
-programs. They just have to be some kind of executable file.
-
-</p>
-<p>They should always conform to the following interface:
-
-</p>
-<ul>
-<li><p>take a markdown stream as stdin</p>
-</li>
-<li><p>output to stdout the generated html</p>
-</li>
-</ul>
-<h2>Example</h2>
-<p>Templates may use the <code>Generator</code> base stream in their template script.
-It is a convenient object that takes a readable stream and can pipe the
-output to any writable stream. Ex:
-
-</p>
-<pre><code class="lang-js">#!/usr/bin/env node
-
-var fs = require(&#39;fs&#39;),
-  path = require(&#39;path&#39;),
-  join = path.join;
-
-// template generator
-var Generator = require(&#39;../generator&#39;);
-
-// from stdin
-process.openStdin().pipe(new Generator(module)).pipe(process.stdout);
-
-// from local file
-fs.createReadStream(&#39;readme.md&#39;).pipe(new Generator(module)).pipe(process.stdout);
-
-// from a remote file
-var request = require(&#39;request&#39;);
-request(&#39;https://raw.github.com/rwldrn/idiomatic.js/master/readme.md&#39;)
-  .pipe(new Generator(module))
-  .pipe(process.stdout);
-
-// same but write to local file instead of stdout
-request(&#39;https://raw.github.com/rwldrn/idiomatic.js/master/readme.md&#39;)
-  .pipe(new Generator(module))
-  .pipe(fs.createWriteStream(&#39;./idiomatic.html&#39;));</code></pre>
-<p>The <code>module</code> object must be passed in to a <code>new Generator</code>, the base
-template directory is guessed from <code>module.filename</code>.
+<pre><code>$ b64 https://github.com/arvida/emoji-cheat-sheet.com/raw/master/public/graphics/emojis/octocat.png</code></pre>
+<p>It just needs to have <code>//</code> in it to be considered as a remote url.
 
 
 </p>
-<h2>Head / Tail templates</h2>
-<p>Two <a href="http://mustache.github.com/">mustache</a> templates (compiled through <a href="http://twitter.github.com/hogan.js/">hogan</a>) are
-concatenated rendered using the following data:
+<p><strong>css props</strong>
 
 </p>
-<ul>
-<li><strong>title</strong>
-is guessed from streaming markdown, the very first heading element or
-text element is parsed as page title.</li>
-</ul>
-<ul>
-<li><strong>description</strong>
-is a noop right now (probably the first paragraph within <code>*... some text ...*</code> markers)</li>
-</ul>
-<ul>
-<li><strong>intro</strong>
-Anything before the very first <code>&lt;hr /&gt;</code> element (<code>---</code> in markdown) is
-extracted from body and made available as <code>data.intro</code>. Is an html
-string (so templates need to use <code>{{{ intro }}}</code>. If no <code>hr</code> element
-were found in the whole document, <code>intro</code> remains empty.</li>
-</ul>
-<ul>
-<li><strong>body</strong>
-The rest of the markdown body. Same as intro, is an html string so <code>{{{
-body }}}</code> should be used.</li>
-</ul>
+<p>If <code>b64-css</code> is used, then the output would be something like
+
+</p>
+<pre><code>$ b64-css ../path/to/some/file.png 
+
+/* b64 encoded ./path/to/some/file.png */
+.file {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAo0AAAHtCAIAAADz09PdAAAPVmlDQ1BJQ0Mg...)
+}</code></pre>
+<p>ready to use in your style sheets (really meant to be use with pbcopy:
+<code>b64-css file.png | pbcopy</code> for quick copy pasting)
+
+</p>
+<p><code>--css</code> option can be given a value which is the CSS selector to use to
+build the snippet. When no selector is set, this defaults to
+<code>.file-basename</code> minus extension.
+
+</p>
+<pre><code>$ b64-css --css &quot;.icons .octocat&quot; https://github.com/arvida/emoji-cheat-sheet.com/raw/master/public/graphics/emojis/octocat.png
+/* b64 encoded https://github.com/arvida/emoji-cheat-sheet.com/raw/master/public/graphics/emojis/octocat.png */
+.icons .octocat {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAHtCAIAAADz09PdAAAPVmlDQ1BJQ0Mg...)
+}</code></pre>
 
     </div>
   <script>

@@ -1,5 +1,9 @@
 
+# b64
+
 *small program/library to make creation of data URIs for web content quick and easy*
+
+---
 
 ## Synopsis
 

@@ -1,3 +1,6 @@
+
+# strip-comments
+
 *quick and dirty stripping comments utility*
 
 ---

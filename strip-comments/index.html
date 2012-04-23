@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>gh-pages</title>
+  <title>strip-comments</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz">
@@ -179,121 +179,100 @@
 </head>
 <body>
   <div id="content">
-    <h1>gh-pages</h1>
+    <h1>strip-comments</h1>
     <div class="intro">
-      <p>Collection of template files for gh-pages creation.
+      <p><em>quick and dirty stripping comments utility</em>
 
 </p>
 
     </div>
 
     <div class="body">
-      <p>Each &quot;theme&quot; is a sub-directory. A typical theme layout is like so:
+      <ul>
+<li><strong>html</strong> Removes html comments via <a href="https://github.com/kangax/html-minifier">html-minifier</a>
+with only <code>removeComments</code> and <code>removeCommentsFromCDATA</code> turned on.</li>
+</ul>
+<ul>
+<li><strong>css</strong> Removes CSS comments via regexp replacement (borrowed to
+<a href="https://github.com/ded/sqwish">https://github.com/ded/sqwish</a>)</li>
+</ul>
+<h3>Install</h3>
+<p>The gist has a valid <code>package.json</code> so npm may be used to directly install the
+package as a tiny global binary utility.
 
 </p>
-<pre><code class="lang-sh">└── theme-name
-    ├── head.html
-    └── tail.html
-    └── theme-name.sh
-    └── package.json</code></pre>
-<ul>
-<li><strong>head.html</strong> is the template header, usually includes the whole
-<code>&lt;head /&gt;</code> and beginning of <code>&lt;body /&gt;</code> content.</li>
-</ul>
-<ul>
-<li><strong>tail.html</strong> is the template footer, usually the closing <code>&lt;/body&gt;</code>
-and <code>&lt;/html&gt;</code> tag.</li>
-</ul>
-<p>CSS and JS are inlined for conveniency.
+<pre><code class="lang-sh">$ npm install https://gist.github.com/gists/11b15861be04ae8f4a50/download -g</code></pre>
+<p>If you&#39;re having problem with this command (like me), you&#39;re likely
+behind a proxy and ssl redirections in npm / request may be not
+supported.
 
 </p>
-<ul>
-<li><strong>package.json</strong> a simple package.json for the given template. A <code>bin</code>
-entry should be provided pointing to the template script.</li>
-</ul>
-<ul>
-<li><strong>theme-name.sh</strong> is the template script executed to build a new html
-page from the template files.</li>
-</ul>
-<h2>template script</h2>
-<p>Can be anything as long as the package.json&#39;s <code>bin</code> property is set appropriately.
+<p>You may have to clone / download locally the package, untar / cd to it
+and run the <code>npm install</code> command (with <code>-g</code> to install the package
+globally).
 
 </p>
-<p>Note that these script files don&#39;t have to be nodejs or even javascript
-programs. They just have to be some kind of executable file.
+<p><strong>To Uninstall</strong>
 
 </p>
-<p>They should always conform to the following interface:
+<pre><code class="lang-sh">$ npm install strip-comments -g</code></pre>
+<p>Nothing is forcing the global install, the little node script can be used
+independently, ex:
 
 </p>
-<ul>
-<li><p>take a markdown stream as stdin</p>
-</li>
-<li><p>output to stdout the generated html</p>
-</li>
-</ul>
-<h2>Example</h2>
-<p>Templates may use the <code>Generator</code> base stream in their template script.
-It is a convenient object that takes a readable stream and can pipe the
-output to any writable stream. Ex:
+<pre><code>$ node strip-bin.js --file index.html --output index.html</code></pre>
+<h3>Usage</h3>
+<p>If installed globally: <code>strip-comments html [options]</code>. If install locally: <code>node strip-bin.js [options]</code>
 
 </p>
-<pre><code class="lang-js">#!/usr/bin/env node
+<pre><code class="lang-sh">
+  Usage: strip-comments [options]
 
-var fs = require(&#39;fs&#39;),
-  path = require(&#39;path&#39;),
-  join = path.join;
+  Options:
 
-// template generator
-var Generator = require(&#39;../generator&#39;);
+    -h, --help     output usage information
+    -v, --version  output the version number
+    -f, --file     input file
+    -o, --output   output file
 
-// from stdin
-process.openStdin().pipe(new Generator(module)).pipe(process.stdout);
+  Examples:
 
-// from local file
-fs.createReadStream(&#39;readme.md&#39;).pipe(new Generator(module)).pipe(process.stdout);
+    $ strip-comments --file index.html --output index.html
+    $ strip-comments --file css/style.css &gt; css/style.css
+    $ cat css/*.css | strip-comments &gt;&gt; stripped.css
+    $ curl http://example.com/css/style.css -s | strip-comments</code></pre>
+<h4>html</h4>
+<pre><code class="lang-sh">$ node strip-bin.js --file index.html --output index.html
 
-// from a remote file
-var request = require(&#39;request&#39;);
-request(&#39;https://raw.github.com/rwldrn/idiomatic.js/master/readme.md&#39;)
-  .pipe(new Generator(module))
-  .pipe(process.stdout);
+# with the binary
+$ strip-comments --file index.html --output index.html</code></pre>
+<h4>css</h4>
+<pre><code class="lang-sh">$ node strip-bin.js --file css/style.css --output css/style.css
 
-// same but write to local file instead of stdout
-request(&#39;https://raw.github.com/rwldrn/idiomatic.js/master/readme.md&#39;)
-  .pipe(new Generator(module))
-  .pipe(fs.createWriteStream(&#39;./idiomatic.html&#39;));</code></pre>
-<p>The <code>module</code> object must be passed in to a <code>new Generator</code>, the base
-template directory is guessed from <code>module.filename</code>.
-
-
-</p>
-<h2>Head / Tail templates</h2>
-<p>Two <a href="http://mustache.github.com/">mustache</a> templates (compiled through <a href="http://twitter.github.com/hogan.js/">hogan</a>) are
-concatenated rendered using the following data:
+# with the binary
+$ strip-comments --file css/style.css --output css/style.css</code></pre>
+<h6>As streams</h6>
+<p>The commands are implemented as valid node Stream. Commands are designed so that
+you can pipe unix command (like cat or curl) and pipe the result to another
+subprocess.
 
 </p>
-<ul>
-<li><strong>title</strong>
-is guessed from streaming markdown, the very first heading element or
-text element is parsed as page title.</li>
-</ul>
-<ul>
-<li><strong>description</strong>
-is a noop right now (probably the first paragraph within <code>*... some text ...*</code> markers)</li>
-</ul>
-<ul>
-<li><strong>intro</strong>
-Anything before the very first <code>&lt;hr /&gt;</code> element (<code>---</code> in markdown) is
-extracted from body and made available as <code>data.intro</code>. Is an html
-string (so templates need to use <code>{{{ intro }}}</code>. If no <code>hr</code> element
-were found in the whole document, <code>intro</code> remains empty.</li>
-</ul>
-<ul>
-<li><strong>body</strong>
-The rest of the markdown body. Same as intro, is an html string so <code>{{{
-body }}}</code> should be used.</li>
-</ul>
+<p>If the <code>--file</code> option is not set, then the command will try to collect data
+from <code>stdin</code>.
+
+</p>
+<pre><code class="lang-sh">$ curl https://raw.github.com/h5bp/html5-boilerplate/master/css/style.css | strip-comments --output style.css</code></pre>
+<p>If the <code>--output</code> option is not set, then the command won&#39;t write anything but
+output the result to standard ouptut.
+
+</p>
+<pre><code class="lang-sh">$ strip-comments --file style.css &gt;&gt; style.stripped.css</code></pre>
+<p>If both are not set, then commands like this should behave as we would expect.
+
+</p>
+<pre><code class="lang-sh">$ curl https://raw.github.com/h5bp/html5-boilerplate/master/css/style.css | strip-comments &gt;&gt; style.css</code></pre>
+<p>That&#39;s pretty much all it does :)
+</p>
 
     </div>
   <script>

@@ -7,7 +7,7 @@ icons:
 	node scripts/fetch.js > all-icons.txt
 
 build:
-	cat head.css | sed 's/:date/$(BUILDID)/' > emojis.css
+	cat css/head.css | sed 's/:date/$(BUILDID)/' > emojis.css
 	./scripts/build.sh
 
 index.html: templates/head.html templates/tail.html

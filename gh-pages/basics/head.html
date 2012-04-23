@@ -110,7 +110,7 @@
     }
 
     body {
-      font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font: 0.9em "Helvetica Neue", Helvetica, Arial, sans-serif;
       margin: 0;
       color: #2C2C2C;
       border-top: 2px solid #DDD;
@@ -136,7 +136,44 @@
       color: #777;
       font-weight: 100;
       letter-spacing: 1px;
+      font-size: 1.1em;
     }
+
+    .body {
+      margin: 3em 0;
+    }
+
+    .intro ul {
+      margin-top: 20px;
+      padding: 0 15px;
+      width: 100%;
+    }
+
+    .intro ul li {
+      float: left;
+      width: 40%;
+      margin-top: 5px;
+      margin-right: 60px;
+      list-style: none;
+      border-bottom: 1px solid #eee;
+      padding: 5px 0;
+      font-size: 12px;
+    }
+
+    ul::after {
+      content: '.';
+      height: 0;
+      display: block;
+      visibility: hidden;
+      clear: both;
+      }
+
+    code { color: #6B6B6B }
+    code .keyword              { font-weight: bold }
+    code .string, code .regexp { color: #17965D }
+    code .class, code .special { color: #2E89FF }
+    code .number               { color: #444 }
+    code .comment              { color: #888 }
 
   </style>
 </head>
