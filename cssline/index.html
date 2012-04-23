@@ -1,0 +1,206 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>cssline</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz">
+  <style>
+    /** curl https://raw.github.com/h5bp/html5-boilerplate/master/css/style.css -s | strip-comments **/
+    article, aside, details, figcaption, figure, footer, header, hgroup, nav, section { display: block; }
+    audio, canvas, video { display: inline-block; *display: inline; *zoom: 1; }
+    audio:not([controls]) { display: none; }
+    [hidden] { display: none; }
+
+    html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    html, button, input, select, textarea { font-family: sans-serif; color: #222; }
+    body { margin: 0; font-size: 1em; line-height: 1.4; }
+    ::-moz-selection { background: #A8CEFF; color: #888; text-shadow: none; }
+    ::selection { background: #A8CEFF; color: #888; text-shadow: none; }
+
+    a { color: #00e; }
+    a:visited { color: inherit; }
+    a:hover { color: #06e; }
+    a:focus { outline: thin dotted; }
+    a:hover, a:active { outline: 0; }
+
+    abbr[title] { border-bottom: 1px dotted; }
+    b, strong { font-weight: bold; }
+    blockquote { margin: 1em 40px; }
+    dfn { font-style: italic; }
+    hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; }
+    ins { background: #ff9; color: #000; text-decoration: none; }
+    mark { background: #ff0; color: #000; font-style: italic; font-weight: bold; }
+    pre, code, kbd, samp { font-family: monospace, serif; _font-family: 'courier new', monospace; font-size: 1em; }
+    pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
+    q { quotes: none; }
+    q:before, q:after { content: ""; content: none; }
+    small { font-size: 85%; }
+    sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+    sup { top: -0.5em; }
+    sub { bottom: -0.25em; }
+
+    ul, ol { margin: 1em 0; padding: 0 0 0 40px; }
+    dd { margin: 0 0 0 40px; }
+    nav ul, nav ol { list-style: none; list-style-image: none; margin: 0; padding: 0; }
+
+    img { border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; }
+    svg:not(:root) { overflow: hidden; }
+
+    figure { margin: 0; }
+
+    form { margin: 0; }
+    fieldset { border: 0; margin: 0; padding: 0; }
+    label { cursor: pointer; }
+    legend { border: 0; *margin-left: -7px; padding: 0; white-space: normal; }
+    button, input, select, textarea { font-size: 100%; margin: 0; vertical-align: baseline; *vertical-align: middle; }
+    button, input { line-height: normal; }
+    button, input[type="button"], input[type="reset"], input[type="submit"] { cursor: pointer; -webkit-appearance: button; *overflow: visible; }
+    button[disabled], input[disabled] { cursor: default; }
+    input[type="checkbox"], input[type="radio"] { box-sizing: border-box; padding: 0; *width: 13px; *height: 13px; }
+    input[type="search"] { -webkit-appearance: textfield; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box; }
+    input[type="search"]::-webkit-search-decoration, input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
+    button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; }
+    textarea { overflow: auto; vertical-align: top; resize: vertical; }
+    input:valid, textarea:valid {  }
+    input:invalid, textarea:invalid { background-color: #f0dddd; }
+
+    table { border-collapse: collapse; border-spacing: 0; }
+    td { vertical-align: top; }
+
+    .chromeframe { margin: 0.2em 0; background: #ccc; color: black; padding: 0.2em 0; }
+
+
+    @media only screen and (min-width: 35em) {
+
+    }
+
+    .ir { border: 0; font: 0/0 a; text-shadow: none; color: transparent; background-color: transparent; }
+    .hidden { display: none !important; visibility: hidden; }
+    .visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+    .visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
+    .invisible { visibility: hidden; }
+    .clearfix:before, .clearfix:after { content: ""; display: table; }
+    .clearfix:after { clear: both; }
+    .clearfix { *zoom: 1; }
+
+    @media print {
+      * { background: transparent !important; color: black !important; box-shadow:none !important; text-shadow: none !important; }
+      a, a:visited { text-decoration: underline; }
+      a[href]:after { content: " (" attr(href) ")"; }
+      abbr[title]:after { content: " (" attr(title) ")"; }
+      .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }
+      pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+      thead { display: table-header-group; }
+      tr, img { page-break-inside: avoid; }
+      img { max-width: 100% !important; }
+      @page { margin: 0.5cm; }
+      p, h2, h3 { orphans: 3; widows: 3; }
+      h2, h3 { page-break-after: avoid; }
+    }
+
+    /** theme specific **/
+    #content {
+      padding: 140px 110px 60px 110px;
+    }
+
+    body {
+      font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      margin: 0;
+      color: #2C2C2C;
+      border-top: 2px solid #DDD;
+    }
+
+    h1 {
+      margin-bottom: 16px;
+      margin-top: 14px;
+      font-size: 48px;
+      line-height: 1em;
+      letter-spacing: 0.2em;
+      font-family: 'Yanone Kaffeesatz',sans-serif;
+    }
+
+    h2 {
+      margin-top: 80px;
+      font-weight: 100;
+      letter-spacing: 1px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .intro p {
+      color: #777;
+      font-weight: 100;
+      letter-spacing: 1px;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="content">
+    <h1>cssline</h1>
+    <div class="intro">
+      <p><em>small program/library to convert style sheets from multi-line CSS to single-line, and vice-versa</em>
+
+</p>
+<p>This tool internally uses <a href="http://twitter.github.com/recess">recess</a> to parse CSS files, and work on top
+of <code>recess.definitions</code> as parsed by the LESS tokenizer.
+
+</p>
+
+    </div>
+
+    <div class="body">
+      <h2>Synopsis</h2>
+<p>You can &quot;single-line&quot; a &quot;multi-line&quot; css
+
+</p>
+<pre><code>$ cat ./path/to/some/file.css | cssline --oneline</code></pre>
+<p>And you can &quot;multi-line&quot; a &quot;single-line&quot; css
+
+</p>
+<pre><code>$ css ./path/to/some/file.css | cssline --multiline</code></pre>
+<p>You can also convert directly a remote file, it just needs to have <code>//</code> in
+it to be considered as a remote url.
+
+</p>
+<pre><code>$ css https://example.com/style.css</code></pre>
+<p>When run without <code>--oneline</code> or <code>--multiline</code>, then <code>cssline</code> tries to
+auto-detect the desired output from streaming css (eg, if the first set
+of <code>.selector { ... props ... }</code> appears to be one a single-line, then
+the conversion is done to multi-line format for the whole document)
+
+</p>
+<p>And of course, you can pipe <code>cssline</code> to itself
+
+</p>
+<pre><code>$ cssline ./style.css | cssline | cssline</code></pre>
+<h2>API</h2>
+<p>Programmatically, this look like this
+
+</p>
+<pre><code class="lang-js">var CSSLine = require(&#39;cssline&#39;).CSSLine;
+fs.createReadStream(&#39;./style.css&#39;).pipe(new CSSLine(opts)).pipe(process.stdout);</code></pre>
+<p>From a remote url
+
+</p>
+<pre><code class="lang-js">request(&#39;http://example.com/style.css&#39;).pipe(new CSSLine(opts)).pipe(process.stdout);</code></pre>
+<p>Convert to single... then convert back to multi..
+
+</p>
+<pre><code class="lang-js">request(&#39;http://example.com/style.css&#39;).pipe(new CSSLine(opts)).pipe(new CSSLine(opts));</code></pre>
+<h3>Options</h3>
+<pre><code class="lang-js">help: Boolean
+version: Boolean
+oneline: Boolean
+multiline: Boolean</code></pre>
+
+    </div>
+  </div>
+</body>
+</html>
+

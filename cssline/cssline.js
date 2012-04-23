@@ -38,7 +38,7 @@ function CSSLine(options) {
     input.pipe(fs.createWriteStream(self.cachefile));
 
     // auto detect mode on first set of selector rules,
-    // if single-line format assume conersion to multi for the whole
+    // if single-line format assume conversion to multi for the whole
     // document
     input.once('data', function(c) {
       self.single = single.test(c);
@@ -50,7 +50,7 @@ function CSSLine(options) {
     var r = self.recess;
 
     // if there's any error, then too bad..
-    if(r.errors.length) return r.errors.forEach(function(err) {
+    if(r.errors.length) r.errors.forEach(function(err) {
       if(err instanceof Error) return console.error(err.message.yellow, err)
 
       var extract = err.extract.map(function(l, i) {
@@ -68,12 +68,14 @@ function CSSLine(options) {
       console.log();
     });
 
+    if(!r.definitions || !r.definitions.length) return;
+
     // most likely parsing single line css if no r.output
     var out = self.single ? this.toMulti(r.data) :
       r.definitions.map(self.toCSS).join('\n');
 
     if(!opts.silent) self.emit('data', out + '\n');
-    self.emit('clean');
+    self.emit('end');
   });
 
   Stream.call(this);
@@ -120,6 +122,8 @@ var foo = false;
 
 // take a less token, returns according css
 CSSLine.prototype.toCSS = function(t) {
+  if(t.features && t.ruleset) t = t.ruleset;
+
   if(t.value) return '\n' + t.value.trim();
 
   var sel = t.selectors.map(function(sel) {
@@ -129,7 +133,7 @@ CSSLine.prototype.toCSS = function(t) {
   }).join(',');
 
   var rules = t.rules.map(function(r) {
-    var value = r.value.value;
+    var value = r.value && r.value.value;
     if(value == null) return '';
     return r.name + ': ' + value.map(function(v) {
       var val = Array.isArray(v.value) ? v.value : [{
@@ -206,6 +210,10 @@ if(file) return cssline(file, opts);
 
 if(opts.help) return fs.createReadStream(path.join(__dirname, 'readme.md')).pipe(process.stdout);
 if(opts.version) return console.log(require('./package.json').version);
+
+// if the file was required from another file (not direct binary use),
+// abort stdin
+if(module.id !== '.') return;
 
 // read from stdin at this point
 process.openStdin().pipe(new CSSLine(opts)).pipe(process.stdout);
