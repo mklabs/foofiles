@@ -17,14 +17,9 @@ var opts = nopt({
 });
 
 // available templates
-
-var templates = fs.readdirSync(__dirname).filter(function(f) {
-  f = path.join(__dirname, f);
-  return !(/node_modules/.test(f)) &&
-    !path.extname(f) &&
-    fs.statSync(f).isDirectory();
-}).map(function(f) {
-  var pkg = require('./' + join(f, 'package.json'));
+var themeDir = join(__dirname, '../themes');
+var templates = fs.readdirSync(themeDir).map(function(f) {
+  var pkg = require(join(themeDir, f, 'package.json'));
   pkg.dirname = f;
   return pkg;
 });

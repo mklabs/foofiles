@@ -12,5 +12,5 @@
     "hogan": "~1.0.5-dev",
     "marked": "~0.2.4-1"
   },
-  "bin": "./gh-pager.js"
+  "bin": "./bin/gh-pager.js"
 }
