@@ -64,15 +64,42 @@ Generator.prototype.end = function() {
   // if no hr, then no intro
   if(!hr) intro = [];
 
+  // copy links to intro
   var links = intro.links = tokens.links;
-  tokens = tokens.slice(intro.length + 1);
-  if(tokens[0].type === 'hr') tokens = tokens.slice(1);
-  tokens.links = links;
+
+  // and build the body part
+  var body = tokens.slice(intro.length + 1);
+  if(body[0].type === 'hr') body = body.slice(1);
+  body.links = links;
+
+  // build the toc, available as `toc` array in templates
+  // each heading is wrapped by an <a id="#title" />` link
+  var toc = this.buildToc(body);
+
   this.emit('data', hogan.compile(template).render({
     title: title.text,
     intro: marked.parser(intro),
-    body: marked.parser(tokens)
+    body: marked.parser([].concat(body)),
+    toc: toc
   }));
+};
+
+Generator.prototype.buildToc = function(tokens) {
+  var headings = tokens.filter(function(t) {
+    return t.type === 'heading';
+  });
+
+  return headings.map(function(h) {
+    var text = h.text,
+      slug = text.replace(/[^\w]/g, '-');
+
+    h.text = h.text.link('#' + slug).replace('href', 'id=' + slug + ' href');
+
+    return {
+      slug: slug,
+      title: text
+    };
+  });
 };
 
 Generator.prototype.read = function(file) {

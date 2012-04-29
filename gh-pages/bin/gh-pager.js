@@ -28,7 +28,6 @@ var names = templates.map(function(t) {
   return t.name;
 });
 
-
 // `--help`
 
 if(opts.help) return fs.createReadStream(join(__dirname, 'gh-pager.txt'))
@@ -60,7 +59,7 @@ var template = templates.filter(function(t) {
   return t.name === name;
 })[0];
 
-var scriptfile = join(__dirname, template.dirname, template.bin);
+var scriptfile = join(themeDir, template.dirname, template.bin);
 
 //
 // todo:
