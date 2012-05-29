@@ -1,0 +1,10 @@
+<!DOCTYPE RCC>
+<RCC>
+  <qresource prefix="/">
+    <file>index.html</file>
+    <file>css/style.css</file>
+    <file>js/main.js</file>
+    <file>js/vendor/jquery-1.7.2.js</file>
+    <file>js/vendor/jquery-1.7.2.min.js</file>
+  </qresource>
+</RCC>
