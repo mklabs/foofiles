@@ -1,0 +1,4 @@
+*.o
+qrc_assets.cpp
+webkit.app
+Makefile

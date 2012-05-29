@@ -256,5 +256,65 @@ Let's change the content of our single source file `app.cpp`:
 
 Let's re-run make and see the result.
 
+MainView
+--------
 
+In this section, we'll create a custom `MainView` class, we'll then replace the
+QWebView creation by our main view component. It'll extend from QWebView.
 
+We'll also start to use our static assets using qt resource system instead of
+just showing a given URL.
+
+This is based on codemirror.cpp, we'll try to follow what's done here. We
+create a new `mainview.cpp` file with the following content:
+
+    #include "mainview.h"
+    #include <QtWebKit>
+
+    MainView::MainView(QWidget *parent) : QWebView(parent)
+    {
+      load(QUrl("qrc:/index.html"));
+    }
+
+And of course, the according header file, `mainview.h`:
+
+    #ifndef MAINVIEW
+    #define MAINVIEW
+
+    #include <QWebView>
+
+    class CodeMirror: public QWebView
+    {
+      Q_OBJECT
+
+    public:
+      MainView(QWidget *parent = 0);
+    };
+
+    #endif
+
+This is the simplest and most basic implementation of a QWebView, we simply
+here just bootstrap the WebView with the content of our `index.html` pulled in
+from qt resource system using `qrc:/`.
+
+We now need to update the main application entry point, the `app.cpp` file to
+use this main view component:
+
+    #include "mainview.h"
+
+    int main(int argc, char **argv)
+    {
+      QApplication app(argc, argv);
+      app.setApplicationName("my super Awesome desktop app");
+
+      // Let's create our main window, and render it
+      MainView view;
+      view->show();
+
+      return app.exec();
+    }
+
+Time to re-compile, and see how it goes.
+
+Since we added some source and header file, we need to update the project file
+as well. This can be simply done by running `qmake -project`
