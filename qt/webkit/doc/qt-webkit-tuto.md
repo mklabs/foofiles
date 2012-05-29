@@ -130,8 +130,6 @@ after the name of the base dir). This is the Qt project file.
 
 http://qt-project.org/doc/qt-4.8/qmake-project-files.html
 
-And here is what qmake generated with this sample:
-
     TEMPLATE = app
     TARGET =
     DEPENDPATH += .
@@ -173,7 +171,7 @@ desktop sample)
 This should be all we need to get started and have a runnable executable.
 Let's try to rerun `qmake -project`, just to see how it goes.
 
-qmake automatically detected a new source file, and added it accordinly to your project file:
+qmake automatically detected a new source file, and added it accordingly to your project file:
 
     # Input
     SOURCES += app.cpp
@@ -187,13 +185,13 @@ shall we? This is simply done by calling `qmake` alone.
 
     $ qmake
 
-And you should see a new generate Makefile, with a pretty long content (well,
+And you should see a new generated Makefile, with a pretty long content (well,
 that's why qmake is so handy). It should include all the necessary
 configuration to build & compile the project, depending on your environment
 and OS.
 
-Eventually, it will also create two separate Makefile, one for realease and
-one for debug (Makefile.Debug and Makefile.Release) alonside two directories:
+Eventually, it will also create two separate Makefile, one for release and
+one for debug (Makefile.Debug and Makefile.Release) alongside two directories:
 debug/ and release/.
 
 Make
@@ -208,37 +206,55 @@ And you should see no warning or compilation errors at this point (well our
 app only consists of 3 lines of code for now). Here's an output sample on osx
 platform:
 
-> todo, replace with osx thing.
+    /usr/bin/g++-4.0 -c -pipe -O2 -arch i386 -Wall -W -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/opt/local/share/qt4/mkspecs/macx-g++ -I. -I. -I. -I/opt/local/include/QtGui -I/opt/local/include/QtCore -I/opt/local/include -o app.o app.cpp
+    /opt/local/bin/rcc -name assets assets.qrc -o qrc_assets.cpp
+    /usr/bin/g++-4.0 -c -pipe -O2 -arch i386 -Wall -W -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/opt/local/share/qt4/mkspecs/macx-g++ -I. -I. -I. -I/opt/local/include/QtGui -I/opt/local/include/QtCore -I/opt/local/include -o qrc_assets.o qrc_assets.cpp
+    /usr/bin/g++-4.0 -headerpad_max_install_names -arch i386 -o webkit.app/Contents/MacOS/webkit app.o qrc_assets.o     -L/opt/local/lib -lQtGui -lQtCore
 
-    mingw32-make -f Makefile.Debug
-    mingw32-make[1]: Entering directory `C:/Users/a511053/src/qt-tests/X2/webkit/qt-webkit-boilerplate'
-    g++ -c -g -frtti -fexceptions -mthreads -Wall -DUNICODE -DQT_LARGEFILE_SUPPORT -
-    DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -
-    DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -I"d:\QtSDK\
-    Desktop\Qt\4.7.4\mingw\include\QtCore" -I"d:\QtSDK\Desktop\Qt\4.7.4\mingw\includ
-    e\QtGui" -I"d:\QtSDK\Desktop\Qt\4.7.4\mingw\include" -I"." -I"d:\QtSDK\Desktop\Q
-    t\4.7.4\mingw\include\ActiveQt" -I"debug" -I"d:\QtSDK\Desktop\Qt\4.7.4\mingw\mks
-    pecs\default" -o debug\app.o app.cpp
-    d:\QtSDK\Desktop\Qt\4.7.4\mingw\bin\rcc.exe -name assets assets.qrc -o debug\qrc
-    _assets.cpp
-    g++ -c -g -frtti -fexceptions -mthreads -Wall -DUNICODE -DQT_LARGEFILE_SUPPORT -
-    DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -
-    DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -I"d:\QtSDK\
-    Desktop\Qt\4.7.4\mingw\include\QtCore" -I"d:\QtSDK\Desktop\Qt\4.7.4\mingw\includ
-    e\QtGui" -I"d:\QtSDK\Desktop\Qt\4.7.4\mingw\include" -I"." -I"d:\QtSDK\Desktop\Q
-    t\4.7.4\mingw\include\ActiveQt" -I"debug" -I"d:\QtSDK\Desktop\Qt\4.7.4\mingw\mks
-    pecs\default" -o debug\qrc_assets.o debug\qrc_assets.cpp
-    g++ -mthreads -Wl,-subsystem,windows -o debug\qt-webkit-boilerplate.exe debug/ap
-    p.o debug/qrc_assets.o  -L"d:\QtSDK\Desktop\Qt\4.7.4\mingw\lib" -lmingw32 -lqtma
-    ind -lQtGuid4 -lQtCored4 -LC:\OpenSSL-Win32_full\lib
-    mingw32-make[1]: Leaving directory `C:/Users/a511053/src/qt-tests/X2/webkit/qt-webkit-boilerplate'
+A new executable (depending on your platform and / or build target, .exe for
+windows) should be created. In my case, this is `webkit.app` as my project name
+is simply `webkit`.
+
+If we run the generated executable, it should work.. But does pretty much anything right now.
+
+Let's change this.
+
+Qt Webkit Bridge
+----------------
+
+http://qt-project.org/doc/qt-4.8/qtwebkit.html#details
+
+Following the few steps outlined in the related documentation, we'll need to
+include `QtWebkit` definitions and link the project against the module.
+
+Let's add the following line to our previously generated `.pro` file:
+
+    QT += webkit
+
+We need to use the [QWebView](http://qt-project.org/doc/qt-4.8/qwebview.html) class.
+
+Let's change the content of our single source file `app.cpp`:
 
 
+    #include <QtGui>
+    // we include the QtWebKit definitions
+    #include <QtWebKit>
+
+    int main(int argc, char **argv)
+    {
+      QApplication app(argc, argv);
+      app.setApplicationName("my super Awesome desktop app");
+
+      // we create a new QWebView, make it point on google and render the view
+      QWebView *view = new QWebView(this);
+      view->load(QUrl("http://google.com/"));
+      view->show();
+
+      return app.exec();
+    }
 
 
-
-
-
+Let's re-run make and see the result.
 
 
 
