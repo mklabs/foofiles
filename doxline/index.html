@@ -1,0 +1,69 @@
+
+> doxline@0.0.1 test /Users/mk/src/mklabs/foofiles/doxline
+> cat main.js | node main.js | node test/docs.js
+
+<!DOCTYPE html><html><head><title>Connect - High quality middleware for node.js</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><link rel="stylesheet" href="http://www.senchalabs.org/connect/style.css"></head><body><div id="content"><h1>Test dox</h1><div id="buf" class="comment"><h2>buf</h2><div class="description"></div><h3>Source</h3><pre><code>var buf = '';
+if(!module.parent) {
+  process.stdin.setEncoding('utf8');
+  process.stdin.on('data', function(chunk) { buf += chunk; });
+  process.stdin.on('end', function() {
+    buf = buf.replace('#!/usr/bin/env node', '');
+    var obj = exports.parseComments(buf, { raw: false });
+    process.stdout.write(JSON.stringify(obj, null, 2) + '\n');
+  }).resume();
+}</code></pre></div><div id="exports.parseComments" class="comment"><h2>exports.parseComments()</h2><div class="description"><p>Streamline two possible type of comments, lines and blocks.<br />Case of lines: is considered a block any subsequent sequences of line<br />comment.</p>
+
+<p>Parse comments in the given strinf of <code>js</code>.</p>
+
+<ul>
+<li>js         - A string of JavaScript code to parse</li>
+<li>options    - A Hash object passed to dox' parseComment
+<ul><li>raw     - Wheter to include compiled html or raw markdown</li></ul></li>
+</ul>
+
+<p>Returns an Array of comments.</p></div><h3>Source</h3><pre><code>exports.parseComments = function parseComments(js, options) {
+  options = options || {};
+  var tokens = esprima.parse(js, { comment: true }),
+    comments = tokens.comments;
+
+  var blocks = [],
+    block = '';
+
+  comments.forEach(function(comment, i) {
+    var start = comment.range[0] - 1,
+      prev = comments[i - 1];
+
+    if(comment.type === 'Block') {
+      return blocks.push({
+        block: comment.value,
+        code: exports.locateCodeBlock(js, prev, comment)
+      });
+    }
+
+    if(!prev) return;
+
+    comment.value = comment.value.replace(/^\s([^\s])/, '$1');
+
+    if(start === prev.range[1]) {
+      block += comment.value + '\n';
+      return;
+    }
+
+    blocks.push({
+      block: block,
+      code: exports.locateCodeBlock(js, prev, comment)
+    });
+
+    block = comment.value + '\n';
+  });
+
+  blocks = blocks.map(function(blk) {
+    blk.block = blk.block.replace(/^ *\* ?/gm, '');
+    var comment = dox.parseComment(blk.block, options);
+    comment.code = blk.code;
+    comment.ctx = dox.parseCodeContext(comment.code);
+    return comment;
+  });
+
+  return blocks;
+};</code></pre></div></div><ul id="menu"><li><a href="#buf">buf</a></li><li><a href="#exports.parseComments">exports.parseComments()</a></li></ul></body></html>
