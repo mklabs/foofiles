@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title><%= sections[0].title %></title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+    <style>
+/* HTML5 Boilerplate  */
+
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section { display: block; }
+audio, canvas, video { display: inline-block; *display: inline; *zoom: 1; }
+audio:not([controls]) { display: none; }
+[hidden] { display: none; }
+
+html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+html, button, input, select, textarea { font-family: sans-serif; color: #222; }
+body { margin: 0; font-size: 1em; line-height: 1.4; }
+
+::-moz-selection { background: #444; color: #fff; text-shadow: none; }
+::selection { background: #444; color: #fff; text-shadow: none; }
+
+a { color: #00e; }
+a:visited { color: #551a8b; }
+a:hover { color: #06e; }
+a:focus { outline: thin dotted; }
+a:hover, a:active { outline: 0; }
+abbr[title] { border-bottom: 1px dotted; }
+b, strong { font-weight: bold; }
+blockquote { margin: 1em 40px; }
+dfn { font-style: italic; }
+hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; }
+ins { background: #ff9; color: #000; text-decoration: none; }
+mark { background: #ff0; color: #000; font-style: italic; font-weight: bold; }
+pre, code, kbd, samp { font-family: monospace, serif; _font-family: 'courier new', monospace; font-size: 1em; }
+pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
+
+q { quotes: none; }
+q:before, q:after { content: ""; content: none; }
+small { font-size: 85%; }
+sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+
+ul, ol { margin: 1em 0; padding: 0 0 0 40px; }
+dd { margin: 0 0 0 40px; }
+nav ul, nav ol { list-style: none; list-style-image: none; margin: 0; padding: 0; }
+
+img { border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; }
+svg:not(:root) { overflow: hidden; }
+figure { margin: 0; }
+
+form { margin: 0; }
+fieldset { border: 0; margin: 0; padding: 0; }
+
+label { cursor: pointer; }
+legend { border: 0; *margin-left: -7px; padding: 0; white-space: normal; }
+button, input, select, textarea { font-size: 100%; margin: 0; vertical-align: baseline; *vertical-align: middle; }
+button, input { line-height: normal; }
+button, input[type="button"], input[type="reset"], input[type="submit"] { cursor: pointer; -webkit-appearance: button; *overflow: visible; }
+button[disabled], input[disabled] { cursor: default; }
+input[type="checkbox"], input[type="radio"] { box-sizing: border-box; padding: 0; *width: 13px; *height: 13px; }
+input[type="search"] { -webkit-appearance: textfield; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box; }
+input[type="search"]::-webkit-search-decoration, input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
+button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; }
+textarea { overflow: auto; vertical-align: top; resize: vertical; }
+input:valid, textarea:valid {  }
+input:invalid, textarea:invalid { background-color: #f0dddd; }
+
+table { border-collapse: collapse; border-spacing: 0; }
+td { vertical-align: top; }
+
+.chromeframe { margin: 0.2em 0; background: #ccc; color: black; padding: 0.2em 0; }
+
+
+
+
+
+
+
+
+
+@media only screen and (min-width: 35em) {
+
+
+}
+
+.ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; *line-height: 0; }
+.ir br { display: none; }
+.hidden { display: none !important; visibility: hidden; }
+.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
+.invisible { visibility: hidden; }
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { *zoom: 1; }
+
+@media print {
+  * { background: transparent !important; color: black !important; box-shadow:none !important; text-shadow: none !important; filter:none !important; -ms-filter: none !important; }
+  a, a:visited { text-decoration: underline; }
+  a[href]:after { content: " (" attr(href) ")"; }
+  abbr[title]:after { content: " (" attr(title) ")"; }
+  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }
+  pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tr, img { page-break-inside: avoid; }
+  img { max-width: 100% !important; }
+  @page { margin: 0.5cm; }
+  p, h2, h3 { orphans: 3; widows: 3; }
+  h2, h3 { page-break-after: avoid; }
+}
+
+/** Impress and presentation styles **/
+body {
+  font-size: 100%;
+  color: #222;
+  font-family: 'PT Sans', sans-serif;
+  min-height: 740px;
+  background: #fff;
+}
+
+
+body hr {
+  display: none;
+}
+
+a, a:visited, .buddy {
+  color: #08d;
+  display: inline-block;
+  text-decoration: none;
+  padding: 0 0.1em;
+  text-shadow: -1px -1px 2px rgba(100,100,100,0.9);
+  border-radius: 0.2em;
+  -webkit-transition: 0.5s;
+  -moz-transition:    0.5s;
+  -ms-transition:     0.5s;
+  -o-transition:      0.5s;
+  transition:         0.5s;
+}
+
+a:hover,
+a:focus {
+  text-shadow: -1px -1px 2px rgba(100,100,100,0.5);
+  color: #222;
+}
+
+.fallback-message {
+  font-family: sans-serif;
+  line-height: 1.3;
+  width: 780px;
+  padding: 10px 10px 0;
+  margin: 20px auto;
+  border: 1px solid #E4C652;
+  border-radius: 10px;
+  background: #EEDC94;
+}
+
+.fallback-message p {
+  margin-bottom: 10px;
+}
+
+.impress-supported .fallback-message {
+  display: none;
+}
+
+
+.step {
+  position: relative;
+  width: 900px;
+  padding: 40px;
+  margin: 20px auto;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing:    border-box;
+  -ms-box-sizing:     border-box;
+  -o-box-sizing:      border-box;
+  box-sizing:         border-box;
+  line-height: 1.5;
+}
+
+.impress-enabled .step {
+  margin: 0;
+  opacity: 0.1;
+
+  -webkit-transition: opacity 1s;
+  -moz-transition:    opacity 1s;
+  -ms-transition:     opacity 1s;
+  -o-transition:      opacity 1s;
+  transition:         opacity 1s;
+}
+
+.impress-enabled .step.active { opacity: 1 }
+
+.slide {
+  box-shadow: 0 0 20px silver;
+  border-radius: 3px;
+  background-clip: padding-box;
+  height: 740px;
+  position: relative;
+  width: 940px;
+  font-weight: normal;
+
+  font-size: 160%;
+}
+
+.slide q {
+  display: block;
+  font-size: 100%;
+  line-height: 72px;
+
+  margin-top: 100px;
+}
+
+.slide q strong {
+  white-space: nowrap;
+}
+
+.slide em {
+  font-style: normal;
+  color: #888;
+}
+
+.slide h1, .slide h2, .slide h3, .slide h4, .slide h5 {
+  font-weight: bold;
+  margin: 0;
+}
+
+.slide h1 {
+  font-size: 2.5em;
+  margin-top: 0;
+}
+
+.slide h2 {
+  font-size: 1.5em;
+  color: #666;
+}
+
+.slide p {
+  line-height: 1.25em;
+}
+
+.slide ul {
+  list-style-type: none;
+}
+
+.slide > ul {
+  margin-left: 2em;
+}
+
+.slide li {
+  margin-bottom: .25em;
+}
+
+.no-touch .slide-touch {
+  display: none;
+}
+
+.touch .slide-no-touch {
+  display: none;
+}
+
+@media screen and (max-device-width: 480px) {
+  .slide {
+    height: auto;
+    font-size: 100%;
+    min-height: auto;
+  }
+
+  .slide-view-module {
+    min-width: 0;
+    min-height: 0;
+  }
+
+  footer {
+    margin-top: 2em;
+    min-width: 0;
+    font-size: .75em;
+  }
+}
+
+@media screen and (max-device-width: 480px) and (orientation: landscape) {
+  footer {
+    font-size: .4em;
+  }
+}
+
+.slide p {
+  color: #222;
+  margin-left: 2em;
+}
+
+.slide em {
+  font-style: normal;
+  color: #888;
+}
+
+.slide ul > ul {
+  font-size: 90%;
+}
+
+/** sligthly smaller link in list **/
+.slide ul a { font-size: 0.8em; }
+
+.slide li {
+  line-height: 1em;
+  margin-bottom: .75em;
+}
+
+.slide .slide-layout-title {
+  padding-top: 2em;
+}
+
+@media screen and (max-device-width: 480px) {
+  .slide-view-module {
+    margin-top: 2em;
+  }
+
+  .slide {
+    font-size: 90%;
+  }
+
+  .slide .slide-layout-title {
+    padding-top: 0;
+  }
+
+  .slide p {
+    font-size: 1.25em;
+    margin-left: .25em;
+  }
+
+  .slide h2 {
+    margin-left: .25em;
+  }
+
+  .slide li {
+    font-size: 1.25em;
+  }
+
+}
+
+
+pre {
+	width: 600px;
+	margin: 0 100px;
+	font-size: 90%;
+}
+
+
+/*
+
+Google Code style (c) Aahan Krish <geekpanth3r@gmail.com>
+
+*/
+
+pre code {
+  display: block; padding: 0.5em;
+  background: white; color: black;
+  font-family: "Inconsolata";
+}
+
+pre .comment,
+pre .template_comment,
+pre .javadoc,
+pre .comment * {
+  color: #800;
+}
+
+pre .keyword,
+pre .method,
+pre .list .title,
+pre .nginx .title,
+pre .tag .title,
+pre .setting .value,
+pre .winutils,
+pre .tex .command,
+pre .http .title,
+pre .request,
+pre .status {
+  color: #008;
+}
+
+pre .envvar,
+pre .tex .special {
+  color: #660;
+}
+
+pre .string,
+pre .tag .value,
+pre .cdata,
+pre .filter .argument,
+pre .attr_selector,
+pre .apache .cbracket,
+pre .date,
+pre .regexp {
+  color: #080;
+}
+
+pre .sub .identifier,
+pre .pi,
+pre .tag,
+pre .tag .keyword,
+pre .decorator,
+pre .ini .title,
+pre .shebang,
+pre .input_number,
+pre .hexcolor,
+pre .rules .value,
+pre .css .value .number,
+pre .literal,
+pre .symbol,
+pre .ruby .symbol .string,
+pre .ruby .symbol .keyword,
+pre .ruby .symbol .keymethods,
+pre .number,
+pre .css .function {
+  color: #066;
+}
+
+pre .class .title,
+pre .haskell .type,
+pre .smalltalk .class,
+pre .javadoctag,
+pre .yardoctag,
+pre .phpdoc,
+pre .typename,
+pre .tag .attribute,
+pre .doctype,
+pre .class .id,
+pre .built_in,
+pre .setting,
+pre .params,
+pre .variable {
+  color: #606;
+}
+
+pre .css .tag,
+pre .rules .property,
+pre .pseudo,
+pre .subst {
+  color: #000;
+}
+
+pre .css .class, pre .css .id {
+  color: #9B703F;
+}
+
+pre .value .important {
+  color: #ff7700;
+  font-weight: bold;
+}
+
+pre .rules .keyword {
+  color: #C5AF75;
+}
+
+pre .annotation,
+pre .apache .sqbracket,
+pre .nginx .built_in {
+  color: #9B859D;
+}
+
+pre .preprocessor,
+pre .preprocessor * {
+  color: #444;
+}
+
+pre .tex .formula {
+  background-color: #EEE;
+  font-style: italic;
+}
+
+pre .diff .header,
+pre .chunk {
+  color: #808080;
+  font-weight: bold;
+}
+
+pre .diff .change {
+  background-color: #BCCFF9;
+}
+
+pre .addition {
+  background-color: #BAEEBA;
+}
+
+pre .deletion {
+  background-color: #FFC8BD;
+}
+
+pre .comment .yardoctag {
+  font-weight: bold;
+}
+
+
+blockquote {
+  border-left: 2px solid #ccc;
+  padding-left: 2em;
+}
+
+#impress blockquote p {
+  color: #777;
+}
+
+#impress #step-7 pre code {
+  font-size: 0.5em;
+}
+
+#impress #step-11 pre code {
+  font-size: 0.5em;
+}
+
+    </style>
+</head>
+
+<body class="impress-not-supported">
+<div class="fallback-message">
+  <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+  <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+</div>
+
+<!--
+
+Impress.js documentation, based on https://github.com/bartaz/impress.js/blob/master/index.html
+---------------------------------------------------------------------------------------------
+
+The `id` attribute of the step element is used to identify it in the URL, but it's optional.
+If it is not defined, it will get a default value of `step-N` where N is a number of slide.
+
+So to make a summary of all the possible attributes used to position presentation steps, we have:
+
+* `data-x`, `data-y`, `data-z`  they define the position of **the center** of step element on
+    the canvas in pixels; their default value is 0;
+* `data-rotate-x`, `data-rotate-y`, 'data-rotate-z`, `data-rotate` they define the rotation of
+    the element around given axis in degrees; their default value is 0; `data-rotate` and `data-rotate-z`
+    are exactly the same;
+* `data-scale` defines the scale of step element; default value is 1
+
+These values are used by impress.js in CSS transformation functions, so for more information consult
+CSS transfrom docs: https://developer.mozilla.org/en/CSS/transform
+
+The `impress()` function also gives you access to the API that controls the presentation.
+
+Just store the result of the call:
+
+    var api = impress();
+
+and you will get three functions you can call:
+
+    `api.init()` - initializes the presentation,
+    `api.next()` - moves to next step of the presentation,
+    `api.prev()` - moves to previous step of the presentation,
+    `api.goto( idx | id | element, [duration] )` - moves the presentation to the step given by its index number
+            id or the DOM element; second parameter can be used to define duration of the transition in ms,
+            but it's optional - if not provided default transition duration for the presentation will be used.
+
+You can also simply call `impress()` again to get the API, so `impress().next()` is also allowed.
+Don't worry, it wont initialize the presentation again.
+
+For some example uses of this API check the last part of the source of impress.js where the API
+is used in event handlers.
+
+specific to this plugin stuff
+-----------------------------
+
+if not defined, the attributes takes the following defaults
+
+* x= x+1000                     | 0
+* y=y                           | -1000
+* z=z                           | 0
+* rotate-x=rotate-x             | 0
+* rotate-y=rotate-y             | 0
+* rotate-z=rotate-z             | 0
+* scale=scale                   | 1
+
+-->
+
+<div id="impress">
+
+  <% _.each(sections, function(section) { %>
+  <section class="step slide" <%= section.attributes %>>
+    <%= section.html %>
+  </section>
+  <% }); %>;
+
+</div>
+
+
+<script>
+/**
+ * impress.js
+ *
+ * impress.js is a presentation tool based on the power of CSS3 transforms and transitions
+ * in modern browsers and inspired by the idea behind prezi.com.
+ *
+ *
+ * Copyright 2011-2012 Bartek Szopka (@bartaz)
+ *
+ * Released under the MIT and GPL Licenses.
+ *
+ * ------------------------------------------------
+ *  author:  Bartek Szopka
+ *  version: 0.5.3
+ *  url:     http://bartaz.github.com/impress.js/
+ *  source:  http://github.com/bartaz/impress.js/
+ *//*jshint bitwise:true, curly:true, eqeqeq:true, forin:true, latedef:true, newcap:true,
+         noarg:true, noempty:true, undef:true, strict:true, browser:true */// You are one of those who like to know how thing work inside?
+// Let me show you the cogs that make impress.js run...
+(function(a,b){"use strict";var c=function(){var b=a.createElement("dummy").style,c="Webkit Moz O ms Khtml".split(" "),d={};return function(a){if(typeof d[a]=="undefined"){var e=a.charAt(0).toUpperCase()+a.substr(1),f=(a+" "+c.join(e+" ")+e).split(" ");d[a]=null;for(var g in f)if(b[f[g]]!==undefined){d[a]=f[g];break}}return d[a]}}(),d=function(a){return[].slice.call(a)},e=function(a,b){var d,e;for(d in b)b.hasOwnProperty(d)&&(e=c(d),e!==null&&(a.style[e]=b[d]));return a},f=function(a,b){return isNaN(a)?b||0:Number(a)},g=function(b){return a.getElementById(b)},h=function(b,c){return c=c||a,c.querySelector(b)},i=function(b,c){return c=c||a,d(c.querySelectorAll(b))},j=function(b,c,d){var e=a.createEvent("CustomEvent");e.initCustomEvent(c,!0,!0,d),b.dispatchEvent(e)},k=function(a){return" translate3d("+a.x+"px,"+a.y+"px,"+a.z+"px) "},l=function(a,b){var c=" rotateX("+a.x+"deg) ",d=" rotateY("+a.y+"deg) ",e=" rotateZ("+a.z+"deg) ";return b?e+d+c:c+d+e},m=function(a){return" scale("+a+") "},n=function(a){return" perspective("+a+"px) "},o=function(){return g(b.location.hash.replace(/^#\/?/,""))},p=function(a){var c=b.innerHeight/a.height,d=b.innerWidth/a.width,e=c>d?d:c;return a.maxScale&&e>a.maxScale&&(e=a.maxScale),a.minScale&&e<a.minScale&&(e=a.minScale),e},q=a.body,r=navigator.userAgent.toLowerCase(),s=c("perspective")!==null&&q.classList&&q.dataset&&r.search(/(iphone)|(ipod)|(android)/)===-1;s?(q.classList.remove("impress-not-supported"),q.classList.add("impress-supported")):q.className+=" impress-not-supported ";var t={},u={width:1024,height:768,maxScale:1,minScale:0,perspective:1e3,transitionDuration:1e3},v=function(){return!1},w=b.impress=function(c){if(!s)return{init:v,"goto":v,prev:v,next:v};c=c||"impress";if(t["impress-root-"+c])return t["impress-root-"+c];var r={},w=null,x=null,y=null,z=null,A=null,B=g(c),C=a.createElement("div"),D=!1,E=null,F=function(a){E!==a&&(j(a,"impress:stepenter"),E=a)},G=function(a){E===a&&(j(a,"impress:stepleave"),E=null)},H=function(a,b){var c=a.dataset,d={translate:{x:f(c.x),y:f(c.y),z:f(c.z)},rotate:{x:f(c.rotateX),y:f(c.rotateY),z:f(c.rotateZ||c.rotate)},scale:f(c.scale,1),el:a};a.id||(a.id="step-"+(b+1)),r["impress-"+a.id]=d,e(a,{position:"absolute",transform:"translate(-50%,-50%)"+k(d.translate)+l(d.rotate)+m(d.scale),transformStyle:"preserve-3d"})},I=function(){if(D)return;var b=h("meta[name='viewport']")||a.createElement("meta");b.content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no",b.parentNode!==a.head&&(b.name="viewport",a.head.appendChild(b));var g=B.dataset;z={width:f(g.width,u.width),height:f(g.height,u.height),maxScale:f(g.maxScale,u.maxScale),minScale:f(g.minScale,u.minScale),perspective:f(g.perspective,u.perspective),transitionDuration:f(g.transitionDuration,u.transitionDuration)},A=p(z),d(B.childNodes).forEach(function(a){C.appendChild(a)}),B.appendChild(C),a.documentElement.style.height="100%",e(q,{height:"100%",overflow:"hidden"});var k={position:"absolute",transformOrigin:"top left",transition:"all 0s ease-in-out",transformStyle:"preserve-3d"};e(B,k),e(B,{top:"50%",left:"50%",transform:n(z.perspective/A)+m(A)}),e(C,k),q.classList.remove("impress-disabled"),q.classList.add("impress-enabled"),y=i(".step",B),y.forEach(H),x={translate:{x:0,y:0,z:0},rotate:{x:0,y:0,z:0},scale:1},D=!0,j(B,"impress:init",{api:t["impress-root-"+c]})},J=function(a){return typeof a=="number"?a=a<0?y[y.length+a]:y[a]:typeof a=="string"&&(a=g(a)),a&&a.id&&r["impress-"+a.id]?a:null},K=null,L=function(a,c){if(!D||!(a=J(a)))return!1;b.scrollTo(0,0);var d=r["impress-"+a.id];w&&(w.classList.remove("active"),q.classList.remove("impress-on-"+w.id)),a.classList.add("active"),q.classList.add("impress-on-"+a.id);var g={rotate:{x:-d.rotate.x,y:-d.rotate.y,z:-d.rotate.z},translate:{x:-d.translate.x,y:-d.translate.y,z:-d.translate.z},scale:1/d.scale},h=g.scale>=x.scale;c=f(c,z.transitionDuration);var i=c/2;a===w&&(A=p(z));var j=g.scale*A;w&&w!==a&&G(w),e(B,{transform:n(z.perspective/j)+m(j),transitionDuration:c+"ms",transitionDelay:(h?i:0)+"ms"}),e(C,{transform:l(g.rotate,!0)+k(g.translate),transitionDuration:c+"ms",transitionDelay:(h?0:i)+"ms"});if(x.scale===g.scale||x.rotate.x===g.rotate.x&&x.rotate.y===g.rotate.y&&x.rotate.z===g.rotate.z&&x.translate.x===g.translate.x&&x.translate.y===g.translate.y&&x.translate.z===g.translate.z)i=0;return x=g,w=a,b.clearTimeout(K),K=b.setTimeout(function(){F(w)},c+i),a},M=function(){var a=y.indexOf(w)-1;return a=a>=0?y[a]:y[y.length-1],L(a)},N=function(){var a=y.indexOf(w)+1;return a=a<y.length?y[a]:y[0],L(a)};return B.addEventListener("impress:init",function(){y.forEach(function(a){a.classList.add("future")}),B.addEventListener("impress:stepenter",function(a){a.target.classList.remove("past"),a.target.classList.remove("future"),a.target.classList.add("present")},!1),B.addEventListener("impress:stepleave",function(a){a.target.classList.remove("present"),a.target.classList.add("past")},!1)},!1),B.addEventListener("impress:init",function(){var a="";B.addEventListener("impress:stepenter",function(c){b.location.hash=a="#/"+c.target.id},!1),b.addEventListener("hashchange",function(){b.location.hash!==a&&L(o())},!1),L(o()||y[0],0)},!1),q.classList.add("impress-disabled"),t["impress-root-"+c]={init:I,"goto":L,next:N,prev:M}};w.supported=s})(document,window),function(a,b){"use strict";var c=function(a,b){var c=null;return function(){var d=this,e=arguments;clearTimeout(c),c=setTimeout(function(){a.apply(d,e)},b)}};a.addEventListener("impress:init",function(d){var e=d.detail.api;a.addEventListener("keydown",function(a){(a.keyCode===9||a.keyCode>=32&&a.keyCode<=34||a.keyCode>=37&&a.keyCode<=40)&&a.preventDefault()},!1),a.addEventListener("keyup",function(a){if(a.keyCode===9||a.keyCode>=32&&a.keyCode<=34||a.keyCode>=37&&a.keyCode<=40){switch(a.keyCode){case 33:case 37:case 38:e.prev();break;case 9:case 32:case 34:case 39:case 40:e.next()}a.preventDefault()}},!1),a.addEventListener("click",function(b){var c=b.target;while(c.tagName!=="A"&&c!==a.documentElement)c=c.parentNode;if(c.tagName==="A"){var d=c.getAttribute("href");d&&d[0]==="#"&&(c=a.getElementById(d.slice(1)))}e.goto(c)&&(b.stopImmediatePropagation(),b.preventDefault())},!1),a.addEventListener("click",function(b){var c=b.target;while((!c.classList.contains("step")||!!c.classList.contains("active"))&&c!==a.documentElement)c=c.parentNode;e.goto(c)&&b.preventDefault()},!1),a.addEventListener("touchstart",function(a){if(a.touches.length===1){var c=a.touches[0].clientX,d=b.innerWidth*.3,f=null;c<d?f=e.prev():c>b.innerWidth-d&&(f=e.next()),f&&a.preventDefault()}},!1),b.addEventListener("resize",c(function(){e.goto(a.querySelector(".active"),500)},250),!1)},!1)}(document,window);
+</script>
+<script>impress().init()</script>
+</body>
+</html>

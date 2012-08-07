@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+
+var fs = require('fs'),
+  path = require('path'),
+  nopt = require('nopt'),
+  Impress = require('../lib/impress');
+
+var opts = nopt().argv,
+  input = opts.remain[0] ? path.resolve(opts.remain[0]) : '';
+
+// got file input, do the file read ourselves, otherwise input stream is stdin
+input = input ? fs.createReadStream(input) : process.openStdin();
+
+// ensure encoding
+input.setEncoding('utf8');
+
+// collect data from our input stream
+var text = '';
+input.on('data', function(chunk){
+  text += chunk;
+});
+
+input.on('end', function() {
+  var impress = new Impress(text, opts);
+
+  impress.on('error', function(err) {
+    console.error('Oh snap!', err);
+    process.exit(1);
+  });
+
+  impress.pipe(process.stdout);
+});
