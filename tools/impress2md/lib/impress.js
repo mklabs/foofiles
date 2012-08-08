@@ -16,35 +16,39 @@ Impress.Template = Template;
 // [marked](https://github.com/chjj/marked), builds a list of sections
 // delimited by level-1 heading
 
-function Impress(body, o) {
+function Impress(options) {
   var self = this;
   this.readable = this.writable = true;
+  stream.Stream.call(this);
 
-  this.options = o || (o = {});
-  o.generate = o.generate == null ? true : o.generate;
-
-  this.body = body;
-  this.tokens = marked.lexer(body);
+  this.options = options || {};
 
   this._sections = [];
   this.chunks = [];
-  this.data = {
-    name: '',
-    page: 0
-  };
-
-  stream.Stream.call(this);
-
-  this.once('ready', this.generate.bind(self));
-
-  // read the template file if provided
-  this.template = new Template(o)
-    .on('ready', this.emit.bind(this, 'ready'));
+  this.data = { name: '', page: 0 };
 }
 
 util.inherits(Impress, stream.Stream);
 
-Impress.prototype.generate = function() {
+
+// stream API
+
+Impress.prototype.write = function write(chunk) {
+  this.chunks = this.chunks.concat(chunk + '');
+};
+
+Impress.prototype.end = function end(chunk) {
+  this.body = this.chunks.join('');
+  this.tokens = marked.lexer(this.body);
+
+  // read the template file if provided
+  this.template = new Template(this.options)
+    .on('ready', this.generate.bind(this));
+};
+
+// Impress parser / converter API
+
+Impress.prototype.generate = function generate() {
   this
     // build the section list
     .sections()
@@ -59,7 +63,7 @@ Impress.prototype.generate = function() {
     .output();
 };
 
-Impress.prototype.sections = function(tokens) {
+Impress.prototype.sections = function _sections(tokens) {
   var self = this;
 
   tokens = tokens || this.tokens;
@@ -93,7 +97,7 @@ Impress.prototype.sections = function(tokens) {
   return this;
 };
 
-Impress.prototype.attributes = function(last) {
+Impress.prototype.attributes = function attributes(last) {
   var attrs = last.attributes || {},
     x = attrs.x,
     y = attrs.y,
@@ -110,7 +114,7 @@ Impress.prototype.attributes = function(last) {
   };
 };
 
-Impress.prototype.highlight = function() {
+Impress.prototype.highlight = function _highlight() {
   this.tokens = this.tokens.map(function(t) {
     if(t.type === 'code') {
       t.text = highlight(t.text).value;
@@ -163,8 +167,6 @@ Impress.prototype.html = function() {
       .replace('$ry', attrs.ry)
       .replace('$rz', attrs.rz)
       .replace('$scale', attrs.scale);
-
-    self.chunks = self.chunks.concat(new Buffer(section.html));
   });
   return this;
 };

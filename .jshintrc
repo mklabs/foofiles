@@ -18,7 +18,6 @@
   "strict": false,
   "globalstrict": false,
 
-  "asi": true,
   "lastsemic": true,
   "laxbreak": true,
   "laxcomma": false,
