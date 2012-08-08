@@ -2,7 +2,7 @@
   "name": "impress2md",
   "version": "0.0.0",
   "description": "Little helper to generate basic impress based HTML presentation from raw Markdown",
-  "main": "bin/impress",
+  "bin": "bin/impress",
   "main": "lib/impress",
   "directories": {
     "test": "test"

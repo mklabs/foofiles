@@ -6,7 +6,8 @@ var fs = require('fs'),
   marked = require('marked'),
   stream = require('stream'),
   Template = require('./template'),
-  highlight = require('highlight.js').highlightAuto;
+  highlight = require('highlight.js').highlightAuto,
+  _ = require('underscore');
 
 module.exports = Impress;
 Impress.Template = Template;
@@ -25,7 +26,10 @@ function Impress(options) {
 
   this._sections = [];
   this.chunks = [];
-  this.data = { name: '', page: 0 };
+  this.data = _.defaults(this.options, {
+    name: '',
+    page: 0
+  });
 }
 
 util.inherits(Impress, stream.Stream);
@@ -72,7 +76,7 @@ Impress.prototype.sections = function _sections(tokens) {
   var sections = this._sections;
 
   // the data object holder passed in to template
-  var data = {};
+  var data = this.data;
 
   var last = {};
   tokens.forEach(function(t) {
@@ -92,7 +96,6 @@ Impress.prototype.sections = function _sections(tokens) {
   });
 
   this._sections = sections;
-  this.data = data;
 
   return this;
 };
@@ -106,7 +109,7 @@ Impress.prototype.attributes = function attributes(last) {
   return {
     x       : x ? x + 1050 : 1,
     y       : y || -1000,
-    z       : z,
+    z       : z || 0,
     rx      : 0,
     ry      : 0,
     rz      : 0,
@@ -154,6 +157,8 @@ Impress.prototype.html = function() {
   var self = this;
   this._sections.forEach(function(section, i) {
     section.html = marked.parser(section.tokens);
+    // marked seems to "consume" the tokens while compiling to html
+    delete section.tokens;
 
     var attrs = section.attributes;
     section.attributes = [
@@ -172,7 +177,11 @@ Impress.prototype.html = function() {
 };
 
 Impress.prototype.output = function() {
-  var output = this.assets(this.template.render({ sections: this._sections }));
+  // bring back the template data, and attach there the sections guess from
+  // markdown
+  var data = _.extend(this.data, { sections: this._sections });
+  // compile and render the final html
+  var output = this.assets(this.template.render(data));
   this.emit('data', output);
   return this;
 };
