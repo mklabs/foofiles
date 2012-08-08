@@ -5,10 +5,32 @@ var fs = require('fs'),
   nopt = require('nopt'),
   Impress = require('../lib/impress');
 
-var opts = nopt().argv,
-  input = opts.remain[0] ? path.resolve(opts.remain[0]) : '';
+var opts = nopt({
+  template: String,
+  version: Boolean,
+  help: Boolean
+}, {
+  tim: '--template impress',
+  tdz: '--template dzslides'
+});
+
+// print usage
+if(opts.help) return fs.createReadStream(path.join(__dirname, 'help.txt'))
+  .pipe(process.stdout);
+
+// print package version
+if(opts.version) return console.log(require('./../package.json').version);
+
+// list available templates
+if(opts.templates) return console.log(
+  [''].concat(Object.keys(Impress.templates)).concat('').join('\n    ')
+);
+
+// get just the first argument from command line
+var input = opts.argv.remain[0] ? path.resolve(opts.argv.remain[0]) : '';
 
 // got file input, do the file read ourselves, otherwise input stream is stdin
 input = input ? fs.createReadStream(input) : process.openStdin();
 
+// .. run !! ..
 input.pipe(new Impress(opts)).pipe(process.stdout);

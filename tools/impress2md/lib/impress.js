@@ -12,6 +12,9 @@ var fs = require('fs'),
 module.exports = Impress;
 Impress.Template = Template;
 
+// shortcut to the hash of built-in templates
+Impress.templates = Template.templates;
+
 
 // converter - takes a raw markdown content, pass it through
 // [marked](https://github.com/chjj/marked), builds a list of sections

@@ -1,0 +1,18 @@
+Usage: impress2md [input] [options]
+
+Options:
+
+  -h, --help      output usage information
+  -v, --version   output the version number
+  -t, --template  specify an alternate template to use (path-like or one
+                  of the built-in)
+  --templates     display available templates
+
+Examples:
+
+  # stdin
+  $ cat myfile.md | impress2md > myfile.json
+
+  # operates over stdio
+  $ impress2md < myfile.md > myfile.html
+
