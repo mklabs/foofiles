@@ -10,5 +10,5 @@ fs.readdirSync(__dirname).forEach(function(file) {
   if(file === 'index.js') return;
 
   var content = fs.readFileSync(path.join(__dirname, file), 'utf8');
-  templates[file] = _.template(content);
+  templates[file.replace(path.extname(file), '')] = _.template(content);
 });
