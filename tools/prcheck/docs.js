@@ -15,14 +15,10 @@ process.stdin.on('data', function(chunk){
 }).resume();
 
 function render(obj) {
-  console.log(obj);
-
   obj = obj.filter(function(o) {
-    console.log(o);
     if(!o.ctx) return false;
     return o.ctx.type === 'method';
   });
-
 
   process.stdout.write(template.render({
     comments: obj
