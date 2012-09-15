@@ -1,0 +1,22 @@
+{
+  "author": "mklabs",
+  "name": "prcheck",
+  "description": "Script to help with testing / checking PR",
+  "version": "0.0.0",
+  "main": "main",
+  "bin": "bin/prcheck",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mklabs/foofiles.git"
+  },
+  "dependencies": {
+    "request": "~2.11.1"
+  },
+  "devDependencies": {
+    "hogan": "~1.0.5-dev"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}

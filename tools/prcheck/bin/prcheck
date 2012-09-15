@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+
+var prcheck = require('..');
+
+// Figure out the PR number
+var num = parseInt(process.argv.slice(2)[0], 10);
+
+if(!num) {
+  return prcheck.error('Pull Request number argument must be provided');
+}
+
+prcheck.load(function(err, config) {
+  if(err) return prcheck.error(err);
+  prcheck.request(config.user, config.repo, num, function(err, user, branch) {
+    if(err) return prcheck.error(err);
+    prcheck.fetch(user, config.repo, function(err) {
+      if(err) return prcheck.error(err);
+      prcheck.branch(user, branch, function(err) {
+        if(err) return prcheck.error(err);
+        console.log('... We did it! ...');
+      });
+    });
+  });
+});
+
