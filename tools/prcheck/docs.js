@@ -16,8 +16,15 @@ process.stdin.on('data', function(chunk){
 
 function render(obj) {
   obj = obj.filter(function(o) {
-    if(!o.ctx) return false;
-    return o.ctx.type === 'method';
+    if(!o.ctx) return !o.isPrivate;
+    return o.ctx.type === 'method' && !o.isPrivate;
+  });
+
+  // code or nocode?
+  obj = obj.map(function(o) {
+    // console.log(o);
+    // o.code = false;
+    return o;
   });
 
   process.stdout.write(template.render({

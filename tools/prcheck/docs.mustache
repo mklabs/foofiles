@@ -1,12 +1,15 @@
 
 {{#comments}}
 
+{{#ctx}}
 ### {{ ctx.string }}
-
+{{/ctx}}
 {{{ description.full }}}
 
+{{#code}}
 <pre><code>
 {{{ code }}
 </code></pre>
+{{/code}}
 
 {{/comments}}
